@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Commands.Dogs.DeleteDog
 {
-    
+
     public class DeleteDogByIdCommand : IRequest<Dog>
     {
         public DeleteDogByIdCommand(DogDto deleteDog, Guid id)
