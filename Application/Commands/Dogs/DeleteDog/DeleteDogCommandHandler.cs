@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Commands.Dogs.DeleteDog
 {
-    internal class DeleteDogByIdCommandHandler : IRequestHandler<DeleteDogByIdCommand, Dog>
+    public class DeleteDogByIdCommandHandler : IRequestHandler<DeleteDogByIdCommand, Dog>
     {
         private readonly MockDatabase _mockDatabase;
 
@@ -20,7 +20,7 @@ namespace Application.Commands.Dogs.DeleteDog
         }
         public Task<Dog> Handle(DeleteDogByIdCommand request, CancellationToken cancellationToken)
         {
-            Dog dogToDelete = _mockDatabase.Dogs.FirstOrDefault(dog => dog.Id == request.Id)!;
+            Dog dogToDelete = _mockDatabase.Dogs.Where(dog => dog.Id == request.Id).FirstOrDefault()!;
 
             _mockDatabase.Dogs.Remove(dogToDelete);
 

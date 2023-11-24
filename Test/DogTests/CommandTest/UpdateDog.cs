@@ -18,7 +18,7 @@ namespace Test.DogTests.CommandTest
         [SetUp]
         public void SetUp()
         {
-            // Initialize tghe handler and mock database before each test
+            // Initialize the handler and mock database before each test
             _mockDatabase = new MockDatabase();
             _handler = new UpdateDogByIdCommandHandler(_mockDatabase);
         }
