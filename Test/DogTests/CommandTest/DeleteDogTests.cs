@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Test.DogTests.CommandTest
 {
     [TestFixture]
-    public class DeleteDog
+    public class DeleteDogTests
     {
         private DeleteDogByIdCommandHandler _handler;
         private MockDatabase _mockDatabase;
@@ -27,7 +27,7 @@ namespace Test.DogTests.CommandTest
         public async Task Handle_Delete_Correct_Dog_By_Id()
         {
             // Arrange
-            var dogId = new Guid("12345678-1234-5678-1234-567812345678");
+            var dogId = new Guid("12345678-1234-5678-1234-567812345679");
 
             var command = new DeleteDogByIdCommand(dogId);
 
