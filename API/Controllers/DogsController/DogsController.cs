@@ -48,10 +48,10 @@ namespace API.Controllers.DogsController
 
         // Update a specific dog
         [HttpPut]
-        [Route("updateDog/{updatedDogId}")]
-        public async Task<IActionResult> UpdateDog([FromBody] DogDto updatedDog, Guid updatedDogId)
+        [Route("updateDog/{updateDogId}")]
+        public async Task<IActionResult> UpdateDog([FromBody] DogDto DogToUpdate, Guid updateDogId)
         {
-            return Ok(await _mediator.Send(new UpdateDogByIdCommand(updatedDog, updatedDogId)));
+            return Ok(await _mediator.Send(new UpdateDogByIdCommand(DogToUpdate, updateDogId)));
         }
 
         // Delete a specific dog
