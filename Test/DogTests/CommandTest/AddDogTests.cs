@@ -1,4 +1,4 @@
-﻿using Application.Commands.Dogs.UpdateDog;
+﻿using Application.Commands.Dogs;
 using Application.Dtos;
 using Infrastructure.Database;
 using System;
@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace Test.DogTests.CommandTest
 {
     [TestFixture]
-    public class UpdateDog
+    public class AddDogTests
     {
-        private UpdateDogByIdCommandHandler _handler;
+        private AddDogCommandHandler _handler;
         private MockDatabase _mockDatabase;
 
         [SetUp]
@@ -20,32 +20,28 @@ namespace Test.DogTests.CommandTest
         {
             // Initialize the handler and mock database before each test
             _mockDatabase = new MockDatabase();
-            _handler = new UpdateDogByIdCommandHandler(_mockDatabase);
+            _handler = new AddDogCommandHandler(_mockDatabase);
         }
 
         [Test]
-        public async Task Handle_Update_Correct_Dog()
+        public async Task Handle_Add_Dog_To_MockDatabase()
         {
             // Arrange
-            var dogId = new Guid("12345678-1234-5678-1234-567812345678");
-
-            var dogName = "Göran";
+            var dogName = "Stefan";
 
             var dto = new DogDto();
 
             dto.Name = dogName;
 
-            var command = new UpdateDogByIdCommand(dto, dogId);
+            var command = new AddDogCommand(dto);
 
-            // Act
+            // Act 
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            Assert.That(result.Name, Is.EqualTo(dogName));
 
+            Assert.IsNotNull(result);
         }
-
-
     }
 }
