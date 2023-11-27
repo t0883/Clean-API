@@ -1,4 +1,5 @@
-﻿using Application.Commands.Cats.UpdateCat;
+﻿using Application.Commands.Cats.AddCat;
+using Application.Commands.Cats.UpdateCat;
 using Application.Dtos;
 using Application.Queries.Cats.GetAll;
 using Application.Queries.Cats.GetById;
@@ -32,6 +33,13 @@ namespace API.Controllers.CatsController
         public async Task<IActionResult> GetCatById(Guid catId)
         {
             return Ok(await _mediator.Send(new GetCatByIdQuery(catId)));
+        }
+
+        [HttpPost]
+        [Route("addNewCat")]
+        public async Task<IActionResult> AddCat([FromBody] CatDto newCat)
+        {
+            return Ok(await _mediator.Send(new AddCatCommand(newCat)));
         }
 
         [HttpPut]
