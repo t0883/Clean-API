@@ -1,18 +1,18 @@
-﻿using Application.Commands.Dogs.DeleteDog;
-using Application.Dtos;
+﻿using Application.Commands.Cats.DeleteCat;
 using Infrastructure.Database;
+using NUnit.Framework.Constraints;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test.DogTests.CommandTest
+namespace Test.CatTests.CommandTest
 {
     [TestFixture]
-    public class DeleteDogTests
+    public class DeleteCatTests
     {
-        private DeleteDogByIdCommandHandler _handler;
+        private DeleteCatByIdCommandHandler _handler;
         private MockDatabase _mockDatabase;
 
         [SetUp]
@@ -20,41 +20,36 @@ namespace Test.DogTests.CommandTest
         {
             // Initialize the handler and mock database before each test
             _mockDatabase = new MockDatabase();
-            _handler = new DeleteDogByIdCommandHandler(_mockDatabase);
+            _handler = new DeleteCatByIdCommandHandler(_mockDatabase);
         }
 
         [Test]
-        public async Task Handle_Delete_Correct_Dog_By_Id()
+        public async Task Handle_Delete_Correct_Cat_By_Id()
         {
-            // Arrange
-            var dogId = new Guid("12345678-1234-5678-1234-567812345679");
+            //Arrange
+            var catId = new Guid("12345678-1234-5678-1234-567812345602");
 
-            var command = new DeleteDogByIdCommand(dogId);
+            var command = new DeleteCatByIdCommand(catId);
 
-            // Act
-
+            //Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
-
-            // Assert
-
+            //Assert
             Assert.That(result, Is.Not.Null);
         }
 
         [Test]
         public async Task Handle_Delete_Incorrect_Id()
         {
-            // Arrange
-            var dogId = Guid.NewGuid();
+            //Arrange
+            var catId = Guid.NewGuid();
 
-            var command = new DeleteDogByIdCommand(dogId);
+            var command = new DeleteCatByIdCommand(catId);
 
-            // Act
-
+            //Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
-            // Assert
-
+            //Assert 
             Assert.That(result, Is.Null);
         }
     }
