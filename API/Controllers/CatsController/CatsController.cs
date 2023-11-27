@@ -36,9 +36,9 @@ namespace API.Controllers.CatsController
 
         [HttpPut]
         [Route("updateCat/{updateCatId}")]
-        public async Task<IActionResult> UpdateCatById([FromBody] CatDto catToUpdate, Guid catId)
+        public async Task<IActionResult> UpdateCatById([FromBody] CatDto catToUpdate, Guid updateCatId)
         {
-            return Ok(await _mediator.Send(new UpdateCatByIdCommand(catToUpdate, catId)));
+            return Ok(await _mediator.Send(new UpdateCatByIdCommand(catToUpdate, updateCatId)));
         }
     }
 }
