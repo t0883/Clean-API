@@ -1,4 +1,5 @@
-﻿using Infrastructure.Database;
+﻿using Infrastructure.Authentication;
+using Infrastructure.Database;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure
@@ -8,6 +9,7 @@ namespace Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddSingleton<MockDatabase>();
+            services.AddSingleton<JwtTokenGenerator>();
             return services;
         }
     }

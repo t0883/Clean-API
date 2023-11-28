@@ -1,6 +1,12 @@
 ﻿using Application.Queries.Users.GetToken;
+using Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,7 +22,7 @@ namespace API.Controllers.UsersController
         {
             _mediator = mediator;
         }
-
+        
         // GET: api/<UsersController>
         [HttpGet]
         [Route("LogIn")]
@@ -24,17 +30,18 @@ namespace API.Controllers.UsersController
         {
             var user = await _mediator.Send(new GetUserTokenQuery(username, password));
 
-            return Ok(user);
-
-            /*
-            if (user.token != null) 
+            if (user != null) 
             {
-                return Ok(user);
+                var token = user.token;
+                return Ok(token);
             }
 
-            return BadRequest();
-            */
+            return NotFound("User not found");
+            
         }
+        
+        
+
 
     }
 }

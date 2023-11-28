@@ -11,6 +11,8 @@
 
         public required bool Authorized { get; set; }
 
-        public string token { get; set; } = string.Empty;
+        public string? token { get; set; }
+
+        public string Role { get; set; }
     }
 }

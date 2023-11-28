@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Infrastructure.Authentication;
 using Infrastructure.Database;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
@@ -16,10 +17,12 @@ namespace Application.Queries.Users.GetToken
     public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, User>
     {
         private readonly MockDatabase _mockDatabase;
+        private readonly JwtTokenGenerator _jwtTokenGenerator;
 
-        public GetUserTokenQueryHandler(MockDatabase mockDatabase)
+        public GetUserTokenQueryHandler(MockDatabase mockDatabase, JwtTokenGenerator jwtTokenGenerator)
         {
             _mockDatabase = mockDatabase;
+            _jwtTokenGenerator = jwtTokenGenerator;
         }
 
         public Task<User> Handle(GetUserTokenQuery request, CancellationToken cancellationToken)
@@ -28,34 +31,12 @@ namespace Application.Queries.Users.GetToken
 
             if (wantedUser.Authorized == true)
             {
-                wantedUser.token = GenerateJwtToken();
+                wantedUser.token = _jwtTokenGenerator.GenerateJwtToken(wantedUser);
 
                 return Task.FromResult(wantedUser);
             }
 
             throw new NotImplementedException();
-        }
-
-        public string GenerateJwtToken()
-        {
-            string secretKey = "wtfisthisshitforatoken";
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, "Admin"),
-                new Claim(ClaimTypes.Role, "Admin")
-            };
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
-                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
-            );
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            return tokenHandler.WriteToken(token);
         }
     }
 }
