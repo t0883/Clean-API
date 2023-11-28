@@ -20,6 +20,6 @@ namespace Application.Queries.Users.GetToken
         public string Username { get; }
         public string Password { get; }
         public bool IsAuthorized { get; }
-
+        public string Token { get; } = string.Empty;
     }
 }

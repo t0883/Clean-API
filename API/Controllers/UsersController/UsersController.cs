@@ -22,7 +22,18 @@ namespace API.Controllers.UsersController
         [Route("LogIn")]
         public async Task<IActionResult> GetToken(string username, string password)
         {
-            return Ok(await _mediator.Send(new GetUserTokenQuery(username, password)));
+            var user = await _mediator.Send(new GetUserTokenQuery(username, password));
+
+            return Ok(user);
+
+            /*
+            if (user.token != null) 
+            {
+                return Ok(user);
+            }
+
+            return BadRequest();
+            */
         }
 
     }

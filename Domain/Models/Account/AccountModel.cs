@@ -10,5 +10,7 @@
         public required string Password { get; set; }
 
         public required bool Authorized { get; set; }
+
+        public string token { get; set; } = string.Empty;
     }
 }
