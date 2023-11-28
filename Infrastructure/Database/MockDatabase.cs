@@ -33,5 +33,18 @@ namespace Infrastructure.Database
             new Cat { Id = new Guid("12345678-1234-5678-1234-567812345601"), Name = "TestCatForUnitTests" },
             new Cat { Id = new Guid("12345678-1234-5678-1234-567812345602"), Name = "AnotherTestCatForUnitTests" }
         };
+
+        public List<User> Users
+        {
+            get { return allUsers; }
+            set { allUsers = value; }
+        }
+
+        private static List<User> allUsers = new()
+        {
+            new User { Id = Guid.NewGuid(), Username = "Admin", Password = "123password", Authorized = true},
+            new User { Id = Guid.NewGuid(), Username = "NotAnAdmin", Password = "123password", Authorized = false}
+        };
+
     }
 }
