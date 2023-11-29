@@ -62,7 +62,7 @@ namespace API.Controllers.CatsController
         [Route("updateCat/{updateCatId}")]
         public async Task<IActionResult> UpdateCatById([FromBody] CatDto catToUpdate, Guid updateCatId)
         {
-            if(catToUpdate.Name == string.Empty)
+            if (catToUpdate.Name == string.Empty)
             {
                 return BadRequest();
             }
