@@ -67,14 +67,15 @@ namespace API.Controllers.CatsController
                 return BadRequest();
             }
 
-            var cat = await _mediator.Send(new GetCatByIdQuery(updateCatId));
+            var cat = await _mediator.Send(new UpdateCatByIdCommand(catToUpdate, updateCatId));
 
-            if (cat != null)
+            if (cat == null)
             {
-                return Ok(await _mediator.Send(new UpdateCatByIdCommand(catToUpdate, updateCatId)));
+                return NotFound($"Cat with Id:{updateCatId} does not exist in database");
             }
 
-            return NotFound();
+            return Ok(cat);
+
         }
 
         [Authorize]
@@ -82,12 +83,7 @@ namespace API.Controllers.CatsController
         [Route("deleteCat/{deleteCatId}")]
         public async Task<IActionResult> DeleteCat(Guid deleteCatId)
         {
-            var cat = await _mediator.Send(new GetCatByIdQuery(deleteCatId));
-
-            if (cat != null)
-            {
-                await _mediator.Send(new DeleteCatByIdCommand(deleteCatId));
-            }
+            await _mediator.Send(new DeleteCatByIdCommand(deleteCatId));
 
             return NoContent();
         }

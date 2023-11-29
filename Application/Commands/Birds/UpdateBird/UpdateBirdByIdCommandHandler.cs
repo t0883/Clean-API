@@ -22,6 +22,10 @@ namespace Application.Commands.Birds.UpdateBird
         {
             Bird birdToUpdate = _mockDatabase.Birds.Where(bird => bird.Id == request.Id).FirstOrDefault()!;
 
+            if (birdToUpdate == null)
+            {
+                return Task.FromResult<Bird>(null!);
+            }
             birdToUpdate.Name = request.BirdToUpdate.Name;
             birdToUpdate.CanFly = request.BirdToUpdate.CanFly;
 

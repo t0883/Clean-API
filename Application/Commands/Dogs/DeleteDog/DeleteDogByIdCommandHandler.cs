@@ -22,6 +22,11 @@ namespace Application.Commands.Dogs.DeleteDog
         {
             Dog dogToDelete = _mockDatabase.Dogs.Where(dog => dog.Id == request.Id).FirstOrDefault()!;
 
+            if (dogToDelete == null)
+            {
+                return Task.FromResult<Dog>(null!);
+            }
+
             _mockDatabase.Dogs.Remove(dogToDelete);
 
             return Task.FromResult(dogToDelete);

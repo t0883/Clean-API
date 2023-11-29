@@ -68,13 +68,14 @@ namespace API.Controllers.BirdsController
                 return BadRequest();
             }
 
-            var bird = await _mediator.Send(new GetBirdByIdQuery(updateBirdId));
+            var bird = await _mediator.Send(new UpdateBirdByIdCommand(birdToUpdate, updateBirdId));
 
-            if (bird != null)
+            if (bird == null)
             {
-                return Ok(await _mediator.Send(new UpdateBirdByIdCommand(birdToUpdate, updateBirdId)));
+                return NotFound($"Bird with Id: {updateBirdId} does not exist in database");
             }
-            return NotFound();
+
+            return Ok(bird);
         }
 
         [Authorize]
@@ -82,12 +83,7 @@ namespace API.Controllers.BirdsController
         [Route("deleteBird/{deleteBirdId}")]
         public async Task<IActionResult> DeleteBird(Guid deleteBirdId)
         {
-            var bird = await _mediator.Send(new GetBirdByIdQuery(deleteBirdId));
-
-            if (bird != null)
-            {
-                await _mediator.Send(new DeleteBirdByIdCommand(deleteBirdId));
-            }
+            await _mediator.Send(new DeleteBirdByIdCommand(deleteBirdId));
 
             return NoContent();
         }

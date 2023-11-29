@@ -71,14 +71,14 @@ namespace API.Controllers.DogsController
                 return BadRequest();
             }
 
-            var dog = await _mediator.Send(new GetDogByIdQuery(updateDogId));
+            var dog = await _mediator.Send(new UpdateDogByIdCommand(dogToUpdate, updateDogId));
 
-            if (dog != null)
+            if (dog == null)
             {
-                return Ok(await _mediator.Send(new UpdateDogByIdCommand(dogToUpdate, updateDogId)));
+                return NotFound($"Dog with Id:{updateDogId} does not exist in database");
             }
 
-            return NotFound();
+            return Ok(dog);
         }
 
         // Delete a specific dog
@@ -87,12 +87,7 @@ namespace API.Controllers.DogsController
         [Route("deleteDog/{deleteDogId}")]
         public async Task<IActionResult> DeleteDog(Guid deleteDogId)
         {
-            var dog = await _mediator.Send(new GetDogByIdQuery(deleteDogId));
-
-            if (dog != null)
-            {
-                await _mediator.Send(new DeleteDogByIdCommand(deleteDogId));
-            }
+            await _mediator.Send(new DeleteDogByIdCommand(deleteDogId));
 
             return NoContent();
         }
