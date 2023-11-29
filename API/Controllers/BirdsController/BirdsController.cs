@@ -1,4 +1,5 @@
 ﻿using Application.Commands.Birds.AddBird;
+using Application.Commands.Birds.DeleteBird;
 using Application.Commands.Birds.UpdateBird;
 using Application.Dtos;
 using Application.Queries.Birds.GetAll;
@@ -48,6 +49,15 @@ namespace API.Controllers.BirdsController
         public async Task<IActionResult> UpdateBirdById([FromBody] BirdDto birdToUpdate, Guid updateBirdId)
         {
             return Ok(await _mediator.Send(new UpdateBirdByIdCommand(birdToUpdate, updateBirdId)));
+        }
+
+        [HttpDelete]
+        [Route("deleteBird/{deleteBirdId}")]
+        public async Task<IActionResult> DeleteBird(Guid deleteBirdId)
+        {
+            await _mediator.Send(new DeleteBirdByIdCommand(deleteBirdId));
+
+            return NoContent();
         }
     }
 }
