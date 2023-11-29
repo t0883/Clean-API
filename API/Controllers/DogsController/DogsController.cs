@@ -36,7 +36,14 @@ namespace API.Controllers.DogsController
         [Route("getDogById/{dogId}")]
         public async Task<IActionResult> GetDogById(Guid dogId)
         {
-            return Ok(await _mediator.Send(new GetDogByIdQuery(dogId)));
+            var dog = await _mediator.Send(new GetDogByIdQuery(dogId));
+
+            if (dog == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(dog);
         }
 
         // Create a new dog 
@@ -45,6 +52,11 @@ namespace API.Controllers.DogsController
         [Route("addNewDog")]
         public async Task<IActionResult> AddDog([FromBody] DogDto newDog)
         {
+            if (newDog.Name == string.Empty)
+            {
+                return BadRequest();
+            }
+
             return Ok(await _mediator.Send(new AddDogCommand(newDog)));
         }
 
@@ -54,7 +66,14 @@ namespace API.Controllers.DogsController
         [Route("updateDog/{updateDogId}")]
         public async Task<IActionResult> UpdateDog([FromBody] DogDto dogToUpdate, Guid updateDogId)
         {
-            return Ok(await _mediator.Send(new UpdateDogByIdCommand(dogToUpdate, updateDogId)));
+            var dog = await _mediator.Send(new GetDogByIdQuery(updateDogId));
+
+            if (dog != null)
+            {
+                return Ok(await _mediator.Send(new UpdateDogByIdCommand(dogToUpdate, updateDogId)));
+            }
+
+            return NotFound();
         }
 
         // Delete a specific dog
@@ -63,7 +82,12 @@ namespace API.Controllers.DogsController
         [Route("deleteDog/{deleteDogId}")]
         public async Task<IActionResult> DeleteDog(Guid deleteDogId)
         {
-            await _mediator.Send(new DeleteDogByIdCommand(deleteDogId));
+            var dog = await _mediator.Send(new GetDogByIdQuery(deleteDogId));
+
+            if (dog != null)
+            {
+                await _mediator.Send(new DeleteDogByIdCommand(deleteDogId));
+            }
 
             return NoContent();
         }
