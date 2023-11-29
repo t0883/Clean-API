@@ -1,4 +1,6 @@
-﻿using Application.Queries.Birds.GetAll;
+﻿using Application.Commands.Birds.UpdateBird;
+using Application.Dtos;
+using Application.Queries.Birds.GetAll;
 using Application.Queries.Birds.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +33,13 @@ namespace API.Controllers.BirdsController
         public async Task<IActionResult> GetBirdById(Guid birdId)
         {
             return Ok(await _mediator.Send(new GetBirdByIdQuery(birdId)));
+        }
+
+        [HttpPut]
+        [Route("updateBird/{updateBirdId}")]
+        public async Task<IActionResult> UpdateBirdById([FromBody] BirdDto birdToUpdate, Guid updateBirdId)
+        {
+            return Ok(await _mediator.Send(new UpdateBirdByIdCommand(birdToUpdate, updateBirdId)));
         }
     }
 }
