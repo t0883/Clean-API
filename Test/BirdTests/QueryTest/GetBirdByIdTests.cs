@@ -1,4 +1,5 @@
-﻿using Application.Queries.Cats.GetById;
+﻿using Application.Queries.Birds.GetById;
+using Application.Queries.Cats.GetById;
 using Infrastructure.Database;
 using System;
 using System.Collections.Generic;
@@ -6,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test.CatTests.QueryTest
+namespace Test.BirdTests.QueryTest
 {
     [TestFixture]
-    public class GetCatByIdTests
+    public class GetBirdByIdTests
     {
-        private GetCatByIdQueryHandler _handler;
+        private GetBirdByIdQueryHandler _handler;
         private MockDatabase _mockDatabase;
 
         [SetUp]
@@ -19,39 +20,38 @@ namespace Test.CatTests.QueryTest
         {
             // Initialize the handler and mock database before each test
             _mockDatabase = new MockDatabase();
-            _handler = new GetCatByIdQueryHandler(_mockDatabase);
+            _handler = new GetBirdByIdQueryHandler(_mockDatabase);
         }
 
         [Test]
-        public async Task Handle_ValidId_ReturnCorrectCat()
+        public async Task Handle_ValidId_ReturnCorrectBird()
         {
-            // Arrange 
-            var catId = new Guid("12345678-1234-5678-1234-567812345601");
+            //Arrange
+            var birdId = new Guid("12345678-1234-5678-1234-567812345603");
 
-            var query = new GetCatByIdQuery(catId);
+            var query = new GetBirdByIdQuery(birdId);
 
-            // Act
+            //Act
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            // Assert 
+            //Assert
             Assert.NotNull(result);
-            Assert.That(result.Id, Is.EqualTo(catId));
-
+            Assert.That(result.Id, Is.EqualTo(birdId));
         }
-
         [Test]
         public async Task Handle_InvalidId_ReturnNull()
         {
-            // Arrange
-            var invalidCatId = Guid.NewGuid();
+            //Arrange
+            var invalidBirdId = Guid.NewGuid();
 
-            var query = new GetCatByIdQuery(invalidCatId);
+            var query = new GetBirdByIdQuery(invalidBirdId);
 
-            // Act
+            //Act
             var result = await _handler.Handle(query, CancellationToken.None);
 
-            // Assert
+            //Assert
             Assert.IsNull(result);
         }
+
     }
 }
