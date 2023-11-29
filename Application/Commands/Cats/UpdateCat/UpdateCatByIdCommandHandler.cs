@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using Infrastructure.Database;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,11 @@ namespace Application.Commands.Cats.UpdateCat
         public Task<Cat> Handle(UpdateCatByIdCommand request, CancellationToken cancellationToken)
         {
             Cat catToUpdate = _mockDatabase.Cats.Where(cat => cat.Id == request.Id).FirstOrDefault()!;
+
+            if (catToUpdate == null)
+            {
+                return Task.FromResult<Cat>(null!);
+            }
 
             catToUpdate.Name = request.CatToUpdate.Name;
             catToUpdate.LikesToPlay = request.CatToUpdate.LikesToPlay;

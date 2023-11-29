@@ -22,6 +22,11 @@ namespace Application.Commands.Cats.DeleteCat
         {
             Cat catToDelete = _mockDatabase.Cats.Where(cat => cat.Id == request.Id).FirstOrDefault()!;
 
+            if (catToDelete == null)
+            {
+                return Task.FromResult<Cat>(null!);
+            }
+
             _mockDatabase.Cats.Remove(catToDelete);
 
             return Task.FromResult(catToDelete);

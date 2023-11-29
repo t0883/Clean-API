@@ -22,6 +22,11 @@ namespace Application.Commands.Birds.DeleteBird
         {
             Bird birdToDelete = _mockDatabase.Birds.Where(bird => bird.Id == request.Id).FirstOrDefault()!;
 
+            if (birdToDelete == null)
+            {
+                return Task.FromResult<Bird>(null!);
+            }
+
             _mockDatabase.Birds.Remove(birdToDelete);
 
             return Task.FromResult(birdToDelete);

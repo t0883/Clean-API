@@ -16,6 +16,11 @@ namespace Application.Commands.Dogs.UpdateDog
         {
             Dog dogToUpdate = _mockDatabase.Dogs.Where(dog => dog.Id == request.Id).FirstOrDefault()!;
 
+            if (dogToUpdate == null)
+            {
+                return Task.FromResult<Dog>(null!);
+            }
+
             dogToUpdate.Name = request.DogToUpdate.Name;
 
             return Task.FromResult(dogToUpdate);
