@@ -23,6 +23,7 @@ namespace Application.Commands.Cats.UpdateCat
             Cat catToUpdate = _mockDatabase.Cats.Where(cat => cat.Id == request.Id).FirstOrDefault()!;
 
             catToUpdate.Name = request.CatToUpdate.Name;
+            catToUpdate.LikesToPlay = request.CatToUpdate.LikesToPlay;
 
             return Task.FromResult(catToUpdate);
         }

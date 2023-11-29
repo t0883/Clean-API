@@ -27,11 +27,11 @@ namespace Infrastructure.Database
 
         private static List<Cat> allCats = new()
         {
-            new Cat { Id = Guid.NewGuid(), Name = "Morris" },
-            new Cat { Id = Guid.NewGuid(), Name = "Pelle" },
-            new Cat { Id = Guid.NewGuid(), Name = "Sillen" },
-            new Cat { Id = new Guid("12345678-1234-5678-1234-567812345601"), Name = "TestCatForUnitTests" },
-            new Cat { Id = new Guid("12345678-1234-5678-1234-567812345602"), Name = "AnotherTestCatForUnitTests" }
+            new Cat { Id = Guid.NewGuid(), Name = "Morris", LikesToPlay = true },
+            new Cat { Id = Guid.NewGuid(), Name = "Pelle", LikesToPlay = true},
+            new Cat { Id = Guid.NewGuid(), Name = "Sillen", LikesToPlay = true},
+            new Cat { Id = new Guid("12345678-1234-5678-1234-567812345601"), Name = "TestCatForUnitTests", LikesToPlay = true },
+            new Cat { Id = new Guid("12345678-1234-5678-1234-567812345602"), Name = "AnotherTestCatForUnitTests", LikesToPlay = false }
         };
 
         public List<User> Users

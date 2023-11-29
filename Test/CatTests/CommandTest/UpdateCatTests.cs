@@ -36,6 +36,8 @@ namespace Test.CatTests.CommandTest
 
             dto.Name = catName;
 
+            dto.LikesToPlay = false;
+
             var command = new UpdateCatByIdCommand(dto, catId);
 
             //Act
@@ -43,6 +45,7 @@ namespace Test.CatTests.CommandTest
 
             //Assert
             Assert.That(result.Name, Is.EqualTo(catName));
+            Assert.That(result.LikesToPlay, Is.False);
         }
     }
 }
