@@ -22,7 +22,7 @@ namespace API.Controllers.UsersController
         {
             _mediator = mediator;
         }
-        
+
         // GET: api/<UsersController>
         [HttpGet]
         [Route("LogIn")]
@@ -30,17 +30,17 @@ namespace API.Controllers.UsersController
         {
             var user = await _mediator.Send(new GetUserTokenQuery(username, password));
 
-            if (user != null) 
+            if (user != null)
             {
                 var token = user.token;
                 return Ok(token);
             }
 
             return NotFound("User not found");
-            
+
         }
-        
-        
+
+
 
 
     }
