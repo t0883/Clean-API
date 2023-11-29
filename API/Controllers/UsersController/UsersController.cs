@@ -24,7 +24,7 @@ namespace API.Controllers.UsersController
         }
 
         // GET: api/<UsersController>
-        [HttpGet]
+        [HttpPost]
         [Route("LogIn")]
         public async Task<IActionResult> GetToken(string username, string password)
         {
@@ -32,8 +32,7 @@ namespace API.Controllers.UsersController
 
             if (user != null)
             {
-                var token = user.token;
-                return Ok(token);
+                return Ok(user.token);
             }
 
             return NotFound("User not found");
