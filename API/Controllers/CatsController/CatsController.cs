@@ -34,7 +34,14 @@ namespace API.Controllers.CatsController
         [Route("getCatById/{catId}")]
         public async Task<IActionResult> GetCatById(Guid catId)
         {
-            return Ok(await _mediator.Send(new GetCatByIdQuery(catId)));
+            var cat = await _mediator.Send(new GetCatByIdQuery(catId));
+
+            if (cat == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(cat);
         }
 
         [Authorize]
@@ -42,6 +49,11 @@ namespace API.Controllers.CatsController
         [Route("addNewCat")]
         public async Task<IActionResult> AddCat([FromBody] CatDto newCat)
         {
+            if (newCat.Name == string.Empty)
+            {
+                return BadRequest();
+            }
+
             return Ok(await _mediator.Send(new AddCatCommand(newCat)));
         }
 
@@ -50,7 +62,14 @@ namespace API.Controllers.CatsController
         [Route("updateCat/{updateCatId}")]
         public async Task<IActionResult> UpdateCatById([FromBody] CatDto catToUpdate, Guid updateCatId)
         {
-            return Ok(await _mediator.Send(new UpdateCatByIdCommand(catToUpdate, updateCatId)));
+            var cat = await _mediator.Send(new GetCatByIdQuery(updateCatId));
+
+            if (cat != null)
+            {
+                return Ok(await _mediator.Send(new UpdateCatByIdCommand(catToUpdate, updateCatId)));
+            }
+
+            return NotFound();
         }
 
         [Authorize]
@@ -58,7 +77,12 @@ namespace API.Controllers.CatsController
         [Route("deleteCat/{deleteCatId}")]
         public async Task<IActionResult> DeleteCat(Guid deleteCatId)
         {
-            await _mediator.Send(new DeleteCatByIdCommand(deleteCatId));
+            var cat = await _mediator.Send(new GetCatByIdQuery(deleteCatId));
+
+            if (cat != null)
+            {
+                await _mediator.Send(new DeleteCatByIdCommand(deleteCatId));
+            }
 
             return NoContent();
         }
