@@ -1,4 +1,6 @@
-﻿using Application.Queries.Users.GetToken;
+﻿using Application.Commands.Users;
+using Application.Dtos;
+using Application.Queries.Users.GetToken;
 using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -38,9 +40,15 @@ namespace API.Controllers.UsersController
             return NotFound("User not found");
 
         }
-
-
-
-
+        [HttpPost]
+        [Route("Register")]
+        public async Task<IActionResult> RegisterUser([FromBody] UserDto newUser)
+        {
+            if (newUser.Password == string.Empty && newUser.UserName == string.Empty)
+            {
+                return BadRequest();
+            }
+            return Ok(await _mediator.Send(new AddUserCommand(newUser)));
+        }
     }
 }

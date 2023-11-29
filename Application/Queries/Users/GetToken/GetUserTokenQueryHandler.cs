@@ -29,14 +29,15 @@ namespace Application.Queries.Users.GetToken
         {
             User wantedUser = _mockDatabase.Users.FirstOrDefault(user => user.Username == request.Username)!;
 
-            if (wantedUser.Authorized == true)
+            if (wantedUser.Authorized == false)
             {
-                wantedUser.token = _jwtTokenGenerator.GenerateJwtToken(wantedUser);
-
-                return Task.FromResult(wantedUser);
+                return Task.FromResult<User>(null!);
             }
 
-            throw new NotImplementedException();
+            wantedUser.token = _jwtTokenGenerator.GenerateJwtToken(wantedUser);
+
+            return Task.FromResult(wantedUser);
+
         }
     }
 }
