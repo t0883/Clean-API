@@ -62,6 +62,11 @@ namespace API.Controllers.CatsController
         [Route("updateCat/{updateCatId}")]
         public async Task<IActionResult> UpdateCatById([FromBody] CatDto catToUpdate, Guid updateCatId)
         {
+            if (catToUpdate.Name == string.Empty)
+            {
+                return BadRequest();
+            }
+
             var cat = await _mediator.Send(new GetCatByIdQuery(updateCatId));
 
             if (cat != null)

@@ -63,6 +63,11 @@ namespace API.Controllers.BirdsController
         [Route("updateBird/{updateBirdId}")]
         public async Task<IActionResult> UpdateBirdById([FromBody] BirdDto birdToUpdate, Guid updateBirdId)
         {
+            if (birdToUpdate.Name == string.Empty)
+            {
+                return BadRequest();
+            }
+
             var bird = await _mediator.Send(new GetBirdByIdQuery(updateBirdId));
 
             if (bird != null)

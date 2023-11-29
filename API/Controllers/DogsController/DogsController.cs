@@ -66,6 +66,11 @@ namespace API.Controllers.DogsController
         [Route("updateDog/{updateDogId}")]
         public async Task<IActionResult> UpdateDog([FromBody] DogDto dogToUpdate, Guid updateDogId)
         {
+            if (dogToUpdate.Name == string.Empty)
+            {
+                return BadRequest();
+            }
+
             var dog = await _mediator.Send(new GetDogByIdQuery(updateDogId));
 
             if (dog != null)
