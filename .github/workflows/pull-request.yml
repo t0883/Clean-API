@@ -18,6 +18,9 @@ jobs:
           dotnet-version: 7.0.x
 
       - name: Format the code
+        run: dotnet format
+
+      - name: Check the format of code
         run: dotnet format ./Clean-API.sln --verbosity diagnostic --verify-no-changes
 
       - name: Restore dependencies
