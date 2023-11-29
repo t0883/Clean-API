@@ -29,7 +29,7 @@ namespace Application.Queries.Users.GetToken
         {
             User wantedUser = _mockDatabase.Users.FirstOrDefault(user => user.Username == request.Username)!;
 
-            if (wantedUser.Authorized == false)
+            if (wantedUser == null)
             {
                 return Task.FromResult<User>(null!);
             }
