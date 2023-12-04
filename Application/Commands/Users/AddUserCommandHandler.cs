@@ -1,11 +1,6 @@
 ﻿using Domain.Models;
 using Infrastructure.Database;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Commands.Users
 {
@@ -20,6 +15,7 @@ namespace Application.Commands.Users
 
         public Task<User> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
+
             User userToCreate = new()
             {
                 Id = Guid.NewGuid(),
