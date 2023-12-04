@@ -1,14 +1,9 @@
 ﻿using Application.Commands.Users;
 using Application.Dtos;
 using Application.Queries.Users.GetToken;
-using Domain.Models;
+using Application.Validators.User;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,10 +14,12 @@ namespace API.Controllers.UsersController
     public class UsersController : ControllerBase
     {
         internal readonly IMediator _mediator;
+        internal readonly UserValidator _userValidator;
 
-        public UsersController(IMediator mediator)
+        public UsersController(IMediator mediator, UserValidator userValidator)
         {
             _mediator = mediator;
+            _userValidator = userValidator;
         }
 
         // GET: api/<UsersController>
@@ -44,11 +41,22 @@ namespace API.Controllers.UsersController
         [Route("Register")]
         public async Task<IActionResult> RegisterUser([FromBody] UserDto newUser)
         {
-            if (newUser.Password == string.Empty && newUser.UserName == string.Empty)
+            var userValidator = _userValidator.Validate(newUser);
+
+            if (!userValidator.IsValid)
             {
-                return BadRequest();
+                return BadRequest(userValidator.Errors.ConvertAll(errors => errors.ErrorMessage));
             }
-            return Ok(await _mediator.Send(new AddUserCommand(newUser)));
+
+            try
+            {
+                return Ok(await _mediator.Send(new AddUserCommand(newUser)));
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
