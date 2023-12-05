@@ -1,9 +1,10 @@
 using API.Swagger;
 using Application;
 using Infrastructure;
+using Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
@@ -41,6 +42,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
 builder.Services.AddApplication().AddInfrastructure();
+
+
+var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
+builder.Services.AddDbContext<SqlDatabase>(option =>
+{
+    option.UseSqlServer(connectionString, b => b.MigrationsAssembly("API"));
+});
 
 var app = builder.Build();
 
