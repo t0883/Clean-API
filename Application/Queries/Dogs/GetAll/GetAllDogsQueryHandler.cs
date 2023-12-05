@@ -8,15 +8,20 @@ namespace Application.Queries.Dogs
     internal sealed class GetAllDogsQueryHandler : IRequestHandler<GetAllDogsQuery, List<Dog>>
     {
         private readonly MockDatabase _mockDatabase;
+        private readonly SqlDatabase _sqlDatabase;
 
-        public GetAllDogsQueryHandler(MockDatabase mockDatabase)
+        public GetAllDogsQueryHandler(MockDatabase mockDatabase, SqlDatabase sqlDatabase)
         {
             _mockDatabase = mockDatabase;
+            _sqlDatabase = sqlDatabase;
+
         }
         public Task<List<Dog>> Handle(GetAllDogsQuery request, CancellationToken cancellationToken)
         {
             List<Dog> allDogsFromMockDatabase = _mockDatabase.Dogs;
-            return Task.FromResult(allDogsFromMockDatabase);
+            List<Dog> allDogsFromSqlDatabase = _sqlDatabase.Dogs.ToList();
+
+            return Task.FromResult(allDogsFromSqlDatabase);
         }
     }
 }

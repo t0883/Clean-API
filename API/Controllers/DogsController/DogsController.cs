@@ -74,7 +74,7 @@ namespace API.Controllers.DogsController
         }
 
         // Create a new dog 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         [Route("addNewDog")]
         [ProducesResponseType(typeof(DogDto), StatusCodes.Status200OK)]

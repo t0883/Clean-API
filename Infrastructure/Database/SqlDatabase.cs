@@ -20,5 +20,6 @@ namespace Infrastructure.Database
 
 
         public DbSet<Bird> Birds { get; set; }
+        public DbSet<Dog> Dogs { get; set; }
     }
 }
