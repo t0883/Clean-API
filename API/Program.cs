@@ -1,7 +1,7 @@
 using API.Swagger;
 using Application;
 using Infrastructure;
-using Infrastructure.Database;
+using Infrastructure.Database.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

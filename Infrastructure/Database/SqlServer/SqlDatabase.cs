@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Infrastructure.Database
+namespace Infrastructure.Database.SqlServer
 {
     public class SqlDatabase : DbContext
     {
@@ -20,5 +20,6 @@ namespace Infrastructure.Database
 
 
         public DbSet<Bird> Birds { get; set; }
+        public DbSet<Dog> Dogs { get; set; }
     }
 }
