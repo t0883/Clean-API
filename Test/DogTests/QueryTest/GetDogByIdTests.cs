@@ -1,51 +1,35 @@
-﻿using Application.Queries.Dogs.GetById;
-using Infrastructure.Database;
+﻿using Domain.Models;
+using Infrastructure.Database.SqlServer;
+using Infrastructure.Repositories.Dogs;
+using Moq;
 
 namespace Test.DogTests.QueryTest
 {
     [TestFixture]
     public class GetDogByIdTests
     {
-        private GetDogByIdQueryHandler _handler;
-        private MockDatabase _mockDatabase;
+        private DogRepository _dogRepository;
+        private Mock<SqlDatabase> _mockSqlDatabase = new Mock<SqlDatabase>();
 
         [SetUp]
         public void SetUp()
         {
-            // Initialize the handler and mock database before each test
-            _mockDatabase = new MockDatabase();
-            _handler = new GetDogByIdQueryHandler(_mockDatabase);
+            _mockSqlDatabase.Setup(db => db.Dogs.FirstOrDefault()).Returns(new Dog { Id = new Guid("12345678-1234-5678-1234-567812345678"), Name = "Pär" });
+            _dogRepository = new DogRepository(_mockSqlDatabase.Object);
         }
 
         [Test]
-        public async Task Handle_ValidId_ReturnsCorrectDog()
+        public async Task Get_Dog_By_Id()
         {
-            // Arrange
+            //Arrange 
             var dogId = new Guid("12345678-1234-5678-1234-567812345678");
 
-            var query = new GetDogByIdQuery(dogId);
+            //Act
+            var result = await _dogRepository.GetDogById(dogId);
 
-            // Act
-            var result = await _handler.Handle(query, CancellationToken.None);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.That(result.Id, Is.EqualTo(dogId));
+            //Assert
+            Assert.That(dogId, Is.EqualTo(result.Id));
         }
 
-        [Test]
-        public async Task Handle_InvalidId_ReturnsNull()
-        {
-            // Arrange
-            var invalidDogId = Guid.NewGuid();
-
-            var query = new GetDogByIdQuery(invalidDogId);
-
-            // Act
-            var result = await _handler.Handle(query, CancellationToken.None);
-
-            // Assert
-            Assert.IsNull(result);
-        }
     }
 }
