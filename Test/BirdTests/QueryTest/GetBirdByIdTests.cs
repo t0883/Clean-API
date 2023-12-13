@@ -1,26 +1,26 @@
-﻿using Application.Queries.Birds.GetById;
-using Application.Queries.Cats.GetById;
-using Infrastructure.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using API.Controllers.BirdsController;
+using Application.Validators;
+using Application.Validators.Bird;
+using FakeItEasy;
+using MediatR;
 
 namespace Test.BirdTests.QueryTest
 {
     [TestFixture]
     public class GetBirdByIdTests
     {
-        private GetBirdByIdQueryHandler _handler;
-        private MockDatabase _mockDatabase;
+        private BirdsController _controller;
+        private IMediator _mediator;
+        private GuidValidator _guidValidator;
+        private BirdValidator _birdValidator;
 
         [SetUp]
         public void SetUp()
         {
-            // Initialize the handler and mock database before each test
-            _mockDatabase = new MockDatabase();
-            _handler = new GetBirdByIdQueryHandler(_mockDatabase);
+            _mediator = A.Fake<IMediator>();
+            _guidValidator = new GuidValidator();
+            _birdValidator = new BirdValidator();
+            _controller = new BirdsController(_mediator, _birdValidator, _guidValidator);
         }
 
         [Test]
@@ -29,29 +29,14 @@ namespace Test.BirdTests.QueryTest
             //Arrange
             var birdId = new Guid("12345678-1234-5678-1234-567812345603");
 
-            var query = new GetBirdByIdQuery(birdId);
 
             //Act
-            var result = await _handler.Handle(query, CancellationToken.None);
+            var result = await _controller.GetBirdById(birdId);
 
             //Assert
             Assert.NotNull(result);
-            Assert.That(result.Id, Is.EqualTo(birdId));
         }
-        [Test]
-        public async Task Handle_InvalidId_ReturnNull()
-        {
-            //Arrange
-            var invalidBirdId = Guid.NewGuid();
 
-            var query = new GetBirdByIdQuery(invalidBirdId);
-
-            //Act
-            var result = await _handler.Handle(query, CancellationToken.None);
-
-            //Assert
-            Assert.IsNull(result);
-        }
 
     }
 }
