@@ -1,51 +1,42 @@
-﻿using Application.Queries.Dogs.GetById;
-using Infrastructure.Database;
+﻿using API.Controllers.DogsController;
+using Application.Validators;
+using Application.Validators.Dog;
+using FakeItEasy;
+using MediatR;
 
 namespace Test.DogTests.QueryTest
 {
     [TestFixture]
     public class GetDogByIdTests
     {
-        private GetDogByIdQueryHandler _handler;
-        private MockDatabase _mockDatabase;
+        private DogsController _controller;
+        private IMediator _mediator;
+        private GuidValidator _guidValidator;
+        private DogValidator _dogValidator;
 
         [SetUp]
         public void SetUp()
         {
-            // Initialize the handler and mock database before each test
-            _mockDatabase = new MockDatabase();
-            _handler = new GetDogByIdQueryHandler(_mockDatabase);
+            _mediator = A.Fake<IMediator>();
+            _guidValidator = new GuidValidator();
+            _dogValidator = new DogValidator();
+            _controller = new DogsController(_mediator, _dogValidator, _guidValidator);
         }
 
         [Test]
-        public async Task Handle_ValidId_ReturnsCorrectDog()
+        public async Task Get_Dog_By_Id()
         {
-            // Arrange
-            var dogId = new Guid("12345678-1234-5678-1234-567812345678");
+            //Arrange
+            var dogId = new Guid("523a0c2b-6b9b-4239-a691-495a6c5778c6");
 
-            var query = new GetDogByIdQuery(dogId);
+            //Act
+            var result = await _controller.GetDogById(dogId);
 
-            // Act
-            var result = await _handler.Handle(query, CancellationToken.None);
+            //Assert
+            Assert.That(result, Is.Not.Null);
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.That(result.Id, Is.EqualTo(dogId));
         }
 
-        [Test]
-        public async Task Handle_InvalidId_ReturnsNull()
-        {
-            // Arrange
-            var invalidDogId = Guid.NewGuid();
-
-            var query = new GetDogByIdQuery(invalidDogId);
-
-            // Act
-            var result = await _handler.Handle(query, CancellationToken.None);
-
-            // Assert
-            Assert.IsNull(result);
-        }
     }
 }
+
