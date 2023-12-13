@@ -1,30 +1,32 @@
-﻿using Application.Commands.Dogs;
+﻿using API.Controllers.DogsController;
+using Application.Commands.Dogs;
 using Application.Dtos;
-using Infrastructure.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Application.Validators;
+using Application.Validators.Dog;
+using FakeItEasy;
+using MediatR;
 
 namespace Test.DogTests.CommandTest
 {
     [TestFixture]
     public class AddDogTests
     {
-        private AddDogCommandHandler _handler;
-        private MockDatabase _mockDatabase;
+        private DogsController _controller;
+        private IMediator _mediator;
+        private GuidValidator _guidValidator;
+        private DogValidator _dogValidator;
 
         [SetUp]
         public void SetUp()
         {
-            // Initialize the handler and mock database before each test
-            _mockDatabase = new MockDatabase();
-            _handler = new AddDogCommandHandler(_mockDatabase);
+            _mediator = A.Fake<IMediator>();
+            _guidValidator = new GuidValidator();
+            _dogValidator = new DogValidator();
+            _controller = new DogsController(_mediator, _dogValidator, _guidValidator);
         }
 
         [Test]
-        public async Task Handle_Add_Dog_To_MockDatabase()
+        public async Task Controller_Add_Dog()
         {
             // Arrange
             var dogName = "Stefan";
@@ -37,7 +39,7 @@ namespace Test.DogTests.CommandTest
 
             // Act 
 
-            var result = await _handler.Handle(command, CancellationToken.None);
+            var result = await _controller.AddDog(dto);
 
             // Assert
 
