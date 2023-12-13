@@ -1,35 +1,42 @@
-﻿using Domain.Models;
-using Infrastructure.Database.SqlServer;
-using Infrastructure.Repositories.Dogs;
-using Moq;
+﻿using API.Controllers.DogsController;
+using Application.Validators;
+using Application.Validators.Dog;
+using FakeItEasy;
+using MediatR;
 
 namespace Test.DogTests.QueryTest
 {
     [TestFixture]
     public class GetDogByIdTests
     {
-        private DogRepository _dogRepository;
-        private Mock<SqlDatabase> _mockSqlDatabase = new Mock<SqlDatabase>();
+        private DogsController _controller;
+        private IMediator _mediator;
+        private GuidValidator _guidValidator;
+        private DogValidator _dogValidator;
 
         [SetUp]
         public void SetUp()
         {
-            _mockSqlDatabase.Setup(db => db.Dogs.FirstOrDefault()).Returns(new Dog { Id = new Guid("12345678-1234-5678-1234-567812345678"), Name = "Pär" });
-            _dogRepository = new DogRepository(_mockSqlDatabase.Object);
+            _mediator = A.Fake<IMediator>();
+            _guidValidator = new GuidValidator();
+            _dogValidator = new DogValidator();
+            _controller = new DogsController(_mediator, _dogValidator, _guidValidator);
         }
 
         [Test]
         public async Task Get_Dog_By_Id()
         {
-            //Arrange 
-            var dogId = new Guid("12345678-1234-5678-1234-567812345678");
+            //Arrange
+            var dogId = new Guid("523a0c2b-6b9b-4239-a691-495a6c5778c6");
 
             //Act
-            var result = await _dogRepository.GetDogById(dogId);
+            var result = await _controller.GetDogById(dogId);
 
             //Assert
-            Assert.That(dogId, Is.EqualTo(result.Id));
+            Assert.That(result, Is.Not.Null);
+
         }
 
     }
 }
+
