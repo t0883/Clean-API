@@ -24,7 +24,7 @@ namespace Test.BirdTests.QueryTest
         }
 
         [Test]
-        public async Task Handle_ValidId_ReturnCorrectBird()
+        public async Task Controller_Get_Bird_By_Id()
         {
             //Arrange
             var birdId = new Guid("12345678-1234-5678-1234-567812345603");

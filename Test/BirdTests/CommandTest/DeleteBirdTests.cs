@@ -25,7 +25,7 @@ namespace Test.BirdTests.CommandTest
         }
 
         [Test]
-        public async Task Handle_Delete_Correct_Bird_By_Id()
+        public async Task Controller_Delete_Correct_Bird_By_Id()
         {
             //Arrange
             var birdId = new Guid("12345678-1234-5678-1234-567812345604");

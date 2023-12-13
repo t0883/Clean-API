@@ -24,7 +24,7 @@ namespace Test.DogTests.QueryTest
         }
 
         [Test]
-        public async Task Get_Dog_By_Id()
+        public async Task Controller_Get_Dog_By_Id()
         {
             //Arrange
             var dogId = new Guid("523a0c2b-6b9b-4239-a691-495a6c5778c6");
