@@ -1,5 +1,4 @@
 ﻿using API.Controllers.DogsController;
-using Application.Commands.Dogs.DeleteDog;
 using Application.Validators;
 using Application.Validators.Dog;
 using FakeItEasy;
@@ -30,12 +29,9 @@ namespace Test.DogTests.CommandTest
             // Arrange
             var dogId = new Guid("12345678-1234-5678-1234-567812345679");
 
-            var command = new DeleteDogByIdCommand(dogId);
-
             // Act
 
             var result = await _controller.DeleteDog(dogId);
-
 
             // Assert
 

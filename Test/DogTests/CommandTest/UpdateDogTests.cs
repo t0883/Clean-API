@@ -1,5 +1,4 @@
 ﻿using API.Controllers.DogsController;
-using Application.Commands.Dogs.UpdateDog;
 using Application.Dtos;
 using Application.Validators;
 using Application.Validators.Dog;
@@ -36,8 +35,6 @@ namespace Test.DogTests.CommandTest
             var dto = new DogDto();
 
             dto.Name = dogName;
-
-            var command = new UpdateDogByIdCommand(dto, dogId);
 
             // Act
 
