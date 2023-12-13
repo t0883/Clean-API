@@ -1,5 +1,4 @@
-﻿using Application.Dtos;
-using Domain.Models;
+﻿using Domain.Models;
 using MediatR;
 
 namespace Application.Commands.Dogs.DeleteDog
@@ -11,7 +10,7 @@ namespace Application.Commands.Dogs.DeleteDog
         {
             Id = id;
         }
-        public Guid? Id { get; }
+        public Guid Id { get; }
 
     }
 

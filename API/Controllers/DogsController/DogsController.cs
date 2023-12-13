@@ -7,7 +7,6 @@ using Application.Queries.Dogs.GetById;
 using Application.Validators;
 using Application.Validators.Dog;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -74,7 +73,7 @@ namespace API.Controllers.DogsController
         }
 
         // Create a new dog 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         [Route("addNewDog")]
         [ProducesResponseType(typeof(DogDto), StatusCodes.Status200OK)]
@@ -98,7 +97,7 @@ namespace API.Controllers.DogsController
         }
 
         // Update a specific dog
-        [Authorize]
+        //[Authorize]
         [HttpPut]
         [Route("updateDog/{updateDogId}")]
         public async Task<IActionResult> UpdateDog([FromBody] DogDto dogToUpdate, Guid updateDogId)
@@ -136,7 +135,7 @@ namespace API.Controllers.DogsController
         }
 
         // Delete a specific dog
-        [Authorize]
+        //[Authorize]
         [HttpDelete]
         [Route("deleteDog/{deleteDogId}")]
         public async Task<IActionResult> DeleteDog(Guid deleteDogId)
