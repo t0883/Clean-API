@@ -25,7 +25,7 @@ namespace Test.BirdTests.CommandTest
         }
 
         [Test]
-        public async Task Handle_Add_Bird_To_MockDatabase()
+        public async Task controller_Add_Bird()
         {
             //Arrange
             var birdName = "Tage";
