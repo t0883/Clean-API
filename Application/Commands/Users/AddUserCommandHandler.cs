@@ -16,11 +16,13 @@ namespace Application.Commands.Users
         public Task<User> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
 
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.NewUser.Password);
+
             User userToCreate = new()
             {
                 Id = Guid.NewGuid(),
                 Username = request.NewUser.UserName,
-                Password = request.NewUser.Password,
+                Password = hashedPassword,
                 Authorized = true,
                 Role = "NewUser"
             };

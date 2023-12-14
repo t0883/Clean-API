@@ -24,7 +24,7 @@ namespace API.Controllers.UsersController
 
         // GET: api/<UsersController>
         [HttpPost]
-        [Route("LogIn")]
+        [Route("Login")]
         public async Task<IActionResult> GetToken(string username, string password)
         {
             var token = await _mediator.Send(new GetUserTokenQuery(username, password));

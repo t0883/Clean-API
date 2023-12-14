@@ -25,6 +25,13 @@ namespace Application.Queries.Users.GetToken
                 return Task.FromResult<string>(null!);
             }
 
+            bool userPassword = BCrypt.Net.BCrypt.Verify(request.Password, wantedUser.Password);
+
+            if (!userPassword)
+            {
+                return Task.FromResult<string>(null!);
+            }
+
             var token = _jwtTokenGenerator.GenerateJwtToken(wantedUser);
 
             return Task.FromResult(token);
