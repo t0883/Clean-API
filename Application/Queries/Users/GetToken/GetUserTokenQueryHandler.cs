@@ -20,7 +20,14 @@ namespace Application.Queries.Users.GetToken
         {
             User wantedUser = _mockDatabase.Users.FirstOrDefault(user => user.Username == request.Username)!;
 
+            bool userPassword = BCrypt.Net.BCrypt.Verify(request.Password, wantedUser.Password);
+
             if (wantedUser == null)
+            {
+                return Task.FromResult<string>(null!);
+            }
+
+            if (!userPassword)
             {
                 return Task.FromResult<string>(null!);
             }
