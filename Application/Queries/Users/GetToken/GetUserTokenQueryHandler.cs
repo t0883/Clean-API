@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Queries.Users.GetToken
 {
-    public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, User>
+    public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, string>
     {
         private readonly MockDatabase _mockDatabase;
         private readonly JwtTokenGenerator _jwtTokenGenerator;
@@ -16,18 +16,18 @@ namespace Application.Queries.Users.GetToken
             _jwtTokenGenerator = jwtTokenGenerator;
         }
 
-        public Task<User> Handle(GetUserTokenQuery request, CancellationToken cancellationToken)
+        public Task<string> Handle(GetUserTokenQuery request, CancellationToken cancellationToken)
         {
             User wantedUser = _mockDatabase.Users.FirstOrDefault(user => user.Username == request.Username)!;
 
             if (wantedUser == null)
             {
-                return Task.FromResult<User>(null!);
+                return Task.FromResult<string>(null!);
             }
 
-            wantedUser.token = _jwtTokenGenerator.GenerateJwtToken(wantedUser);
+            var token = _jwtTokenGenerator.GenerateJwtToken(wantedUser);
 
-            return Task.FromResult(wantedUser);
+            return Task.FromResult(token);
 
         }
     }

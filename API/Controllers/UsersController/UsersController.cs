@@ -27,14 +27,14 @@ namespace API.Controllers.UsersController
         [Route("LogIn")]
         public async Task<IActionResult> GetToken(string username, string password)
         {
-            var user = await _mediator.Send(new GetUserTokenQuery(username, password));
+            var token = await _mediator.Send(new GetUserTokenQuery(username, password));
 
-            if (user != null)
+            if (token == null)
             {
-                return Ok(user.token);
+                return NotFound("User not found");
             }
 
-            return NotFound("User not found");
+            return Ok(token);
 
         }
         [HttpPost]

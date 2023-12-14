@@ -1,14 +1,8 @@
-﻿using Domain.Models;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace Application.Queries.Users.GetToken
 {
-    public class GetUserTokenQuery : IRequest<User>
+    public class GetUserTokenQuery : IRequest<string>
     {
         public GetUserTokenQuery(string username, string password)
         {
@@ -20,6 +14,5 @@ namespace Application.Queries.Users.GetToken
         public string Username { get; }
         public string Password { get; }
         public bool IsAuthorized { get; }
-        public string Token { get; } = string.Empty;
     }
 }
