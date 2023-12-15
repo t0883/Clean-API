@@ -2,6 +2,7 @@
 using Infrastructure.Database;
 using Infrastructure.Repositories.Birds;
 using Infrastructure.Repositories.Dogs;
+using Infrastructure.Repositories.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure
@@ -14,6 +15,7 @@ namespace Infrastructure
             services.AddSingleton<JwtTokenGenerator>();
             services.AddScoped<IDogRepository, DogRepository>();
             services.AddScoped<IBirdRepository, BirdRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }

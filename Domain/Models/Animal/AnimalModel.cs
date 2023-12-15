@@ -1,8 +1,15 @@
-﻿namespace Domain.Models.Animal
+﻿using Domain.Models.Account;
+using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Models.Animal
 {
     public class AnimalModel
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        [Key]
+        public Guid AnimalId { get; set; }
+        public required string Name { get; set; }
+
+        public List<UserModel> Users { get; set; }
+
     }
 }

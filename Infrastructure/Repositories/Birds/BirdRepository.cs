@@ -64,7 +64,7 @@ namespace Infrastructure.Repositories.Birds
         {
             try
             {
-                Bird? wantedBird = await _sqlDatabase.Birds.FirstOrDefaultAsync(bird => bird.Id == id);
+                Bird? wantedBird = await _sqlDatabase.Birds.FirstOrDefaultAsync(bird => bird.AnimalId == id);
 
                 if (wantedBird == null)
                 {
@@ -93,7 +93,7 @@ namespace Infrastructure.Repositories.Birds
             catch (Exception ex)
             {
 
-                throw new Exception($"An error occured while updating a bird by Id {updateBird.Id} from database", ex);
+                throw new Exception($"An error occured while updating a bird by Id {updateBird.AnimalId} from database", ex);
             }
         }
     }

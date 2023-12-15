@@ -20,11 +20,13 @@ namespace Application.Commands.Dogs
 
             Dog dogToCreate = new()
             {
-                Id = Guid.NewGuid(),
+                AnimalId = Guid.NewGuid(),
                 Name = request.NewDog.Name
             };
 
-            var createdDog = await _dogRepository.AddDog(dogToCreate);
+
+            var createdDog = await _dogRepository.AddDog(dogToCreate, request.NewDog.Id);
+
 
             return createdDog;
         }

@@ -14,18 +14,49 @@ namespace Infrastructure.Repositories.Dogs
             _sqlDatabase = sqlDatabase;
         }
 
-        public async Task<Dog> AddDog(Dog newDog)
+        public async Task<Dog> AddDog(Dog newDog, Guid id)
         {
+            /*
             try
             {
+                var user = await _sqlDatabase.Users.FirstOrDefaultAsync(x => x.UserId == id);
+
+                if (user == null)
+                {
+                    throw new Exception("User not found");
+                }
+
+                var userToUpdate = new UserModel
+                {
+                    UserId = user.UserId,
+                    Username = user.Username,
+                    Password = user.Password,
+                    Authorized = false
+                };
+
+                var dogToCreate = new Dog
+                {
+                    Name = newDog.Name
+                };
+
+                var dogToInputInUser = new AnimalModel { Name = newDog.Name, AnimalId = newDog.AnimalId, Users =  };
+
+                user.Animals.Add(dogToInputInUser);
                 _sqlDatabase.Dogs.Add(newDog);
+                _sqlDatabase.Update(user);
                 _sqlDatabase.SaveChanges();
+
+
+
                 return await Task.FromResult(newDog);
+
             }
             catch (Exception ex)
             {
                 throw new ArgumentException(ex.Message);
             }
+            */
+            throw new NotImplementedException();
         }
 
         public async Task<Dog> DeleteDogById(Guid id)
@@ -62,7 +93,7 @@ namespace Infrastructure.Repositories.Dogs
         {
             try
             {
-                Dog? wantedDog = await _sqlDatabase.Dogs.FirstOrDefaultAsync(dog => dog.Id == dogId);
+                Dog? wantedDog = await _sqlDatabase.Dogs.FirstOrDefaultAsync(dog => dog.AnimalId == dogId);
 
                 if (wantedDog == null)
                 {
@@ -89,7 +120,7 @@ namespace Infrastructure.Repositories.Dogs
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occured while updating a dog by Id {updatedDog.Id} from database", ex);
+                throw new Exception($"An error occured while updating a dog by Id {updatedDog.AnimalId} from database", ex);
             }
         }
     }

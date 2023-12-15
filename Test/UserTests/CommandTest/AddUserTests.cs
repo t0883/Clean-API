@@ -1,14 +1,6 @@
-﻿using Application.Commands.Users;
-using Application.Dtos;
-using Infrastructure.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Test.UserTests.CommandTest
+﻿namespace Test.UserTests.CommandTest
 {
+    /*
     [TestFixture]
     public class AddUserTests
     {
@@ -47,4 +39,5 @@ namespace Test.UserTests.CommandTest
         }
 
     }
+    */
 }

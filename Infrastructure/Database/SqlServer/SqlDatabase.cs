@@ -18,8 +18,15 @@ namespace Infrastructure.Database.SqlServer
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DatabaseConnection"));
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+        }
+
 
         public DbSet<Bird> Birds { get; set; }
         public DbSet<Dog> Dogs { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Cat> Cats { get; set; }
     }
 }

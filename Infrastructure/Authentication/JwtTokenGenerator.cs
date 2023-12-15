@@ -1,12 +1,8 @@
 ﻿using Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Infrastructure.Authentication
 {
@@ -23,7 +19,7 @@ namespace Infrastructure.Authentication
                 new("Username", user.Username),
                 new("Role", user.Role),
                 new("Authorized", user.Authorized.ToString()),
-                new("Id", user.Id.ToString()),
+                new("Id", user.UserId.ToString()),
                 new("Issuer", "Clean-API"),
                 new("Audience", "API")
             };

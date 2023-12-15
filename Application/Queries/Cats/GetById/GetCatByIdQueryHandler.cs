@@ -1,11 +1,6 @@
 ﻿using Domain.Models;
 using Infrastructure.Database;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Queries.Cats.GetById
 {
@@ -20,7 +15,7 @@ namespace Application.Queries.Cats.GetById
 
         public Task<Cat> Handle(GetCatByIdQuery request, CancellationToken cancellationToken)
         {
-            Cat wantedCat = _mockDatabase.Cats.Where(cat => cat.Id == request.Id).FirstOrDefault()!;
+            Cat wantedCat = _mockDatabase.Cats.Where(cat => cat.AnimalId == request.Id).FirstOrDefault()!;
 
             if (wantedCat == null)
             {

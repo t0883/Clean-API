@@ -1,11 +1,6 @@
 ﻿using Domain.Models;
 using Infrastructure.Database;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Commands.Cats.AddCat
 {
@@ -20,13 +15,15 @@ namespace Application.Commands.Cats.AddCat
 
         public Task<Cat> Handle(AddCatCommand request, CancellationToken cancellationToken)
         {
+
             Cat catToCreate = new()
             {
-                Id = Guid.NewGuid(),
+                AnimalId = Guid.NewGuid(),
                 Name = request.NewCat.Name
             };
 
             _mockDatabase.Cats.Add(catToCreate);
+
 
             return Task.FromResult(catToCreate);
         }
