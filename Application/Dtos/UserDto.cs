@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Models.Animal;
 
 namespace Application.Dtos
 {
@@ -10,5 +6,10 @@ namespace Application.Dtos
     {
         public required string UserName { get; set; }
         public required string Password { get; set; }
+
+        public required string Role { get; set; }
+        public required bool Authorized { get; set; }
+        public List<AnimalModel>? AnimalModels { get; set; }
+
     }
 }

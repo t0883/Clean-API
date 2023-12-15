@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Infrastructure.Database.SqlServer;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories.Users
 {
@@ -28,19 +29,57 @@ namespace Infrastructure.Repositories.Users
             }
         }
 
-        public Task<User> DeleteUser(User user)
+        public async Task<User> DeleteUser(Guid userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                User userToDelete = await GetUserById(userId);
+
+                _sqlDatabase.Users.Remove(userToDelete);
+
+                _sqlDatabase.SaveChanges();
+
+                return await Task.FromResult(userToDelete);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occured while deleting a user with Id {userId} from the database", ex);
+            }
         }
 
-        public Task<User> GetUserById(Guid id)
+        public async Task<User> GetUserById(Guid userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                User? wantedUser = await _sqlDatabase.Users.FirstOrDefaultAsync(user => user.UserId == userId);
+
+                if (wantedUser == null)
+                {
+                    throw new Exception($"There is no user with Id {userId} in the database");
+                }
+
+                return await Task.FromResult(wantedUser);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occed while getting a user by Id {userId} from database", ex);
+            }
         }
 
-        public Task<User> UpdateUser(User user)
+        public async Task<User> UpdateUser(User updatedUser)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _sqlDatabase.Users.Update(updatedUser);
+
+                _sqlDatabase.SaveChanges();
+
+                return await Task.FromResult(updatedUser);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occured while updating a user by Id {updatedUser.UserId} from database", ex);
+            }
         }
     }
 }

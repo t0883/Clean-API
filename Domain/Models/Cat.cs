@@ -1,12 +1,9 @@
 ﻿using Domain.Models.Animal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models
 {
+    [Table("Cat")]
     public class Cat : AnimalModel
     {
         public string Purr()

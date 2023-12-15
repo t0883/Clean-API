@@ -1,8 +1,8 @@
-﻿using Domain.Models.Animal;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Models.Account
 {
+
     public class UserModel
     {
         [Key]
@@ -16,6 +16,5 @@ namespace Domain.Models.Account
 
         public string? Role { get; set; }
 
-        public List<AnimalModel> Animals { get; set; }
     }
 }

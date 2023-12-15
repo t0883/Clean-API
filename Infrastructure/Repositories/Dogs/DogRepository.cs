@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.Models.UserAnimal;
 using Infrastructure.Database.SqlServer;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,9 +17,10 @@ namespace Infrastructure.Repositories.Dogs
 
         public async Task<Dog> AddDog(Dog newDog, Guid id)
         {
-            /*
             try
             {
+                //User user = await _sqlDatabase.Users.FirstOrDefaultAsync(x => x.UserId == id);
+
                 var user = await _sqlDatabase.Users.FirstOrDefaultAsync(x => x.UserId == id);
 
                 if (user == null)
@@ -26,26 +28,12 @@ namespace Infrastructure.Repositories.Dogs
                     throw new Exception("User not found");
                 }
 
-                var userToUpdate = new UserModel
-                {
-                    UserId = user.UserId,
-                    Username = user.Username,
-                    Password = user.Password,
-                    Authorized = false
-                };
+                var userAnimal = new UserAnimalJointTable { AnimalId = newDog.AnimalId, UserId = id };
 
-                var dogToCreate = new Dog
-                {
-                    Name = newDog.Name
-                };
+                _sqlDatabase.UserAnimals.Add(userAnimal);
 
-                var dogToInputInUser = new AnimalModel { Name = newDog.Name, AnimalId = newDog.AnimalId, Users =  };
-
-                user.Animals.Add(dogToInputInUser);
                 _sqlDatabase.Dogs.Add(newDog);
-                _sqlDatabase.Update(user);
                 _sqlDatabase.SaveChanges();
-
 
 
                 return await Task.FromResult(newDog);
@@ -55,8 +43,6 @@ namespace Infrastructure.Repositories.Dogs
             {
                 throw new ArgumentException(ex.Message);
             }
-            */
-            throw new NotImplementedException();
         }
 
         public async Task<Dog> DeleteDogById(Guid id)

@@ -25,9 +25,10 @@ namespace Application.Commands.Dogs.UpdateDog
                 return null!;
             }
 
-
+            /*
             dogToUpdate.Name = request.DogToUpdate.Name;
-
+            dogToUpdate.Users.Add(request.DogToUpdate.Users);
+            */
             var updatedDog = await _dogRepository.UpdateDog(dogToUpdate);
 
             return updatedDog;

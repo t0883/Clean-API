@@ -1,6 +1,10 @@
-﻿using Application.Commands.Users;
+﻿using Application.Commands.Users.AddUser;
+using Application.Commands.Users.DeleteUser;
+using Application.Commands.Users.UpdateUser;
 using Application.Dtos;
+using Application.Queries.Users.GetAllAnimals;
 using Application.Queries.Users.GetToken;
+using Application.Validators;
 using Application.Validators.User;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +19,13 @@ namespace API.Controllers.UsersController
     {
         internal readonly IMediator _mediator;
         internal readonly UserValidator _userValidator;
+        internal readonly GuidValidator _guidValidator;
 
-        public UsersController(IMediator mediator, UserValidator userValidator)
+        public UsersController(IMediator mediator, UserValidator userValidator, GuidValidator guidValidator)
         {
             _mediator = mediator;
             _userValidator = userValidator;
+            _guidValidator = guidValidator;
         }
 
         // GET: api/<UsersController>
@@ -39,9 +45,59 @@ namespace API.Controllers.UsersController
         }
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> RegisterUser([FromBody] UserDto newUser)
+        public async Task<IActionResult> RegisterUser(string username, string password)
         {
-            var userValidator = _userValidator.Validate(newUser);
+            //var userValidator = _userValidator.Validate(username);
+            /*
+            if (!userValidator.IsValid)
+            {
+                return BadRequest(userValidator.Errors.ConvertAll(errors => errors.ErrorMessage));
+            }
+            */
+            try
+            {
+                return Ok(await _mediator.Send(new AddUserCommand(username, password)));
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+        [HttpDelete]
+        [Route("deleteUser/{deleteUserId}")]
+        public async Task<IActionResult> DeleteUser(Guid deleteUserId)
+        {
+            var guidValidator = _guidValidator.Validate(deleteUserId);
+
+            if (!guidValidator.IsValid)
+            {
+                return BadRequest(guidValidator.Errors.ConvertAll(errors => errors.ErrorMessage));
+            }
+
+            try
+            {
+                await _mediator.Send(new DeleteUserByIdCommand(deleteUserId));
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+            return NoContent();
+        }
+        [HttpPut]
+        [Route("updateUser/{updateUserId}")]
+        public async Task<IActionResult> UpdateUser([FromBody] UserDto userToUpdate, Guid updateUserId)
+        {
+            var userValidator = _userValidator.Validate(userToUpdate);
+
+            var guidValidator = _guidValidator.Validate(updateUserId);
+            if (!guidValidator.IsValid)
+            {
+                return BadRequest(guidValidator.Errors.ConvertAll(errors => errors.ErrorMessage));
+            }
 
             if (!userValidator.IsValid)
             {
@@ -50,13 +106,27 @@ namespace API.Controllers.UsersController
 
             try
             {
-                return Ok(await _mediator.Send(new AddUserCommand(newUser)));
+                var user = await _mediator.Send(new UpdateUserByIdCommand(userToUpdate, updateUserId));
+
+                if (user == null)
+                {
+                    return NotFound($"User with Id {updateUserId} does not exist in database");
+                }
+                return Ok(user);
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
+        }
+
+        [HttpGet]
+        [Route("getAllAnimalsById/{userId}")]
+        public async Task<IActionResult> GetAnimalsById(Guid userId)
+        {
+            var animals = await _mediator.Send(new GetAllAnimalsByIdQuery(userId));
+
+            return Ok(animals);
         }
     }
 }

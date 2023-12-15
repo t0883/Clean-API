@@ -6,7 +6,7 @@ namespace Infrastructure.Repositories.Users
     {
         Task<User> AddUser(User user);
         Task<User> UpdateUser(User user);
-        Task<User> DeleteUser(User user);
-        Task<User> GetUserById(Guid id);
+        Task<User> DeleteUser(Guid userId);
+        Task<User> GetUserById(Guid userId);
     }
 }

@@ -25,7 +25,7 @@ namespace Application.Commands.Dogs
             };
 
 
-            var createdDog = await _dogRepository.AddDog(dogToCreate, request.NewDog.Id);
+            var createdDog = await _dogRepository.AddDog(dogToCreate, request.Id);
 
 
             return createdDog;

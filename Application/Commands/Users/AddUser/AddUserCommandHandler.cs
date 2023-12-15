@@ -2,9 +2,9 @@
 using Infrastructure.Repositories.Users;
 using MediatR;
 
-namespace Application.Commands.Users
+namespace Application.Commands.Users.AddUser
 {
-    public class AddUserCommandHandler : IRequestHandler<AddUserCommand, User>
+    public class AddUserCommandHandler : IRequestHandler<AddUserCommand, string>
     {
         private readonly IUserRepository _userRepository;
 
@@ -13,23 +13,25 @@ namespace Application.Commands.Users
             _userRepository = userRepository;
         }
 
-        public async Task<User> Handle(AddUserCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
 
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.NewUser.Password);
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             User userToCreate = new()
             {
                 UserId = Guid.NewGuid(),
-                Username = request.NewUser.UserName,
+                Username = request.UserName,
                 Password = hashedPassword,
                 Authorized = true,
                 Role = "NewUser"
             };
 
-            var createdUser = await _userRepository.AddUser(userToCreate);
+            await _userRepository.AddUser(userToCreate);
 
-            return createdUser;
+            var message = "";
+
+            return message;
         }
     }
 }
