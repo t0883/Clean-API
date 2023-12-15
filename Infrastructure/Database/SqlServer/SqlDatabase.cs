@@ -27,12 +27,12 @@ namespace Infrastructure.Database.SqlServer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            /*
             modelBuilder.Entity<UserAnimalJointTable>(x =>
             {
-
                 x.ToView("View_UserAnimalsJointTable");
-
             });
+            */
             modelBuilder.Entity<UserAnimalJointTable>().ToTable(nameof(UserAnimalJointTable));
 
             /*
