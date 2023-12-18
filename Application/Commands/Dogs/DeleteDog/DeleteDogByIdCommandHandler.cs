@@ -25,7 +25,7 @@ namespace Application.Commands.Dogs.DeleteDog
                 return null!;
             }
 
-            await _dogRepository.DeleteDogById(dogToDelete.Id);
+            await _dogRepository.DeleteDogById(dogToDelete.AnimalId);
 
             return dogToDelete;
         }

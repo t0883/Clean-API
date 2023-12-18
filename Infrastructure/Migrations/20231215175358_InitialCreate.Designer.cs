@@ -4,6 +4,7 @@ using Infrastructure.Database.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SqlDatabase))]
-    partial class SqlDatabaseModelSnapshot : ModelSnapshot
+    [Migration("20231215175358_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +40,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("AnimalId");
 
-                    b.ToTable("Bird", (string)null);
+                    b.ToTable("Bird");
                 });
 
             modelBuilder.Entity("Domain.Models.Cat", b =>
@@ -55,7 +58,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("AnimalId");
 
-                    b.ToTable("Cat", (string)null);
+                    b.ToTable("Cat");
                 });
 
             modelBuilder.Entity("Domain.Models.Dog", b =>
@@ -70,7 +73,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("AnimalId");
 
-                    b.ToTable("Dog", (string)null);
+                    b.ToTable("Dog");
                 });
 
             modelBuilder.Entity("Domain.Models.User", b =>
@@ -95,7 +98,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Domain.Models.UserAnimal.UserAnimalJointTable", b =>

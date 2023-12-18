@@ -77,7 +77,7 @@ namespace API.Controllers.DogsController
         [HttpPost]
         [Route("addNewDog")]
         [ProducesResponseType(typeof(DogDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> AddDog([FromBody] DogDto newDog)
+        public async Task<IActionResult> AddDog([FromBody] DogDto newDog, Guid userId)
         {
             var dogValidator = _dogValidator.Validate(newDog);
 
@@ -88,7 +88,7 @@ namespace API.Controllers.DogsController
 
             try
             {
-                return Ok(await _mediator.Send(new AddDogCommand(newDog)));
+                return Ok(await _mediator.Send(new AddDogCommand(newDog, userId)));
             }
             catch (Exception ex)
             {
@@ -116,15 +116,14 @@ namespace API.Controllers.DogsController
                 return BadRequest(dogValidator.Errors.ConvertAll(errors => errors.ErrorMessage));
             }
 
-            var dog = await _mediator.Send(new UpdateDogByIdCommand(dogToUpdate, updateDogId));
-
-            if (dog == null)
-            {
-                return NotFound($"Dog with Id:{updateDogId} does not exist in database");
-            }
-
             try
             {
+                var dog = await _mediator.Send(new UpdateDogByIdCommand(dogToUpdate, updateDogId));
+
+                if (dog == null)
+                {
+                    return NotFound($"Dog with Id:{updateDogId} does not exist in database");
+                }
                 return Ok(dog);
             }
             catch (Exception ex)

@@ -1,12 +1,9 @@
 ﻿using Domain.Models.Animal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models
 {
+    [Table("Bird")]
     public class Bird : AnimalModel
     {
         public bool CanFly { get; set; }

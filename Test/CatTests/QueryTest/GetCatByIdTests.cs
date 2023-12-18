@@ -1,10 +1,5 @@
 ﻿using Application.Queries.Cats.GetById;
 using Infrastructure.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Test.CatTests.QueryTest
 {
@@ -35,7 +30,7 @@ namespace Test.CatTests.QueryTest
 
             // Assert 
             Assert.NotNull(result);
-            Assert.That(result.Id, Is.EqualTo(catId));
+            Assert.That(result.AnimalId, Is.EqualTo(catId));
 
         }
 

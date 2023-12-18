@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.Models.UserAnimal;
 using Infrastructure.Database.SqlServer;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,13 +15,29 @@ namespace Infrastructure.Repositories.Dogs
             _sqlDatabase = sqlDatabase;
         }
 
-        public async Task<Dog> AddDog(Dog newDog)
+        public async Task<Dog> AddDog(Dog newDog, Guid id)
         {
             try
             {
+                //User user = await _sqlDatabase.Users.FirstOrDefaultAsync(x => x.UserId == id);
+
+                var user = await _sqlDatabase.Users.FirstOrDefaultAsync(x => x.UserId == id);
+
+                if (user == null)
+                {
+                    throw new Exception("User not found");
+                }
+
+                var userAnimal = new UserAnimalJointTable { AnimalId = newDog.AnimalId, UserId = id };
+
+                _sqlDatabase.UserAnimals.Add(userAnimal);
+
                 _sqlDatabase.Dogs.Add(newDog);
                 _sqlDatabase.SaveChanges();
+
+
                 return await Task.FromResult(newDog);
+
             }
             catch (Exception ex)
             {
@@ -62,7 +79,7 @@ namespace Infrastructure.Repositories.Dogs
         {
             try
             {
-                Dog? wantedDog = await _sqlDatabase.Dogs.FirstOrDefaultAsync(dog => dog.Id == dogId);
+                Dog? wantedDog = await _sqlDatabase.Dogs.FirstOrDefaultAsync(dog => dog.AnimalId == dogId);
 
                 if (wantedDog == null)
                 {
@@ -89,7 +106,7 @@ namespace Infrastructure.Repositories.Dogs
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occured while updating a dog by Id {updatedDog.Id} from database", ex);
+                throw new Exception($"An error occured while updating a dog by Id {updatedDog.AnimalId} from database", ex);
             }
         }
     }
