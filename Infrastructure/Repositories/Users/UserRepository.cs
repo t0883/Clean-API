@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Infrastructure.Authentication;
 using Infrastructure.Database.SqlServer;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +8,12 @@ namespace Infrastructure.Repositories.Users
     internal class UserRepository : IUserRepository
     {
         private readonly SqlDatabase _sqlDatabase;
+        private readonly JwtTokenGenerator _jwtTokenGenerator;
 
-        public UserRepository(SqlDatabase sqlDatabase)
+        public UserRepository(SqlDatabase sqlDatabase, JwtTokenGenerator jwtTokenGenerator)
         {
             _sqlDatabase = sqlDatabase;
+            _jwtTokenGenerator = jwtTokenGenerator;
         }
 
         public async Task<User> AddUser(User user)
@@ -64,6 +67,25 @@ namespace Infrastructure.Repositories.Users
             {
                 throw new Exception($"An error occed while getting a user by Id {userId} from database", ex);
             }
+        }
+
+        public async Task<string> SignInUserByUsernameAndPassword(string username, string password)
+        {
+            User? wantedUser = await _sqlDatabase.Users.Where(user => user.Username == username).FirstOrDefaultAsync();
+
+            if (wantedUser == null)
+            {
+                return null!;
+            }
+
+            bool userPassword = BCrypt.Net.BCrypt.Verify(password, wantedUser.Password);
+
+            if (!userPassword)
+            {
+                return null!;
+            }
+
+            return _jwtTokenGenerator.GenerateJwtToken(wantedUser);
         }
 
         public async Task<User> UpdateUser(User updatedUser)

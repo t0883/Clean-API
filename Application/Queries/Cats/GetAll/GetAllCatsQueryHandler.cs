@@ -1,27 +1,22 @@
 ﻿using Domain.Models;
-using Infrastructure.Database;
+using Infrastructure.Repositories.Cats;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Queries.Cats.GetAll
 {
     internal sealed class GetAllCatsQueryHandler : IRequestHandler<GetAllCatsQuery, List<Cat>>
     {
-        private readonly MockDatabase _mockDatabase;
+        private readonly ICatRepository _catRepository;
 
-        public GetAllCatsQueryHandler(MockDatabase mockDatabase)
+        public GetAllCatsQueryHandler(ICatRepository catRepository)
         {
-            _mockDatabase = mockDatabase;
+            _catRepository = catRepository;
         }
 
-        Task<List<Cat>> IRequestHandler<GetAllCatsQuery, List<Cat>>.Handle(GetAllCatsQuery request, CancellationToken cancellationToken)
+        public async Task<List<Cat>> Handle(GetAllCatsQuery request, CancellationToken cancellationToken)
         {
-            List<Cat> allCatsFromMockDatabase = _mockDatabase.Cats;
-            return Task.FromResult(allCatsFromMockDatabase);
+            List<Cat> allCatsFromMockDatabase = await _catRepository.GetAllCatsAsync();
+            return allCatsFromMockDatabase;
         }
     }
 }
