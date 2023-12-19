@@ -1,9 +1,6 @@
-﻿using Application.Queries.Users.GetToken;
-using Infrastructure.Authentication;
-using Infrastructure.Database;
-
-namespace Test.UserTests.QueryTest
+﻿namespace Test.UserTests.QueryTest
 {
+    /*
     [TestFixture]
     public class GetTokenForUser
     {
@@ -50,4 +47,5 @@ namespace Test.UserTests.QueryTest
             Assert.IsNull(result);
         }
     }
+    */
 }

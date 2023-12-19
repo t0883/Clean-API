@@ -1,0 +1,99 @@
+﻿using Domain.Models;
+using Infrastructure.Database.SqlServer;
+using Microsoft.EntityFrameworkCore;
+
+namespace Infrastructure.Repositories.Cats
+{
+    public class CatRepository : ICatRepository
+    {
+        private readonly SqlDatabase _sqlDatabase;
+
+        public CatRepository(SqlDatabase sqlDatabase)
+        {
+            _sqlDatabase = sqlDatabase;
+        }
+
+        public async Task<Cat> AddCat(Cat newCat)
+        {
+            try
+            {
+                _sqlDatabase.Cats.Add(newCat);
+                _sqlDatabase.SaveChanges();
+                return await Task.FromResult(newCat);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+        }
+
+        public async Task<Cat> DeleteCatById(Guid id)
+        {
+            try
+            {
+                Cat catToDelete = await GetCatById(id);
+
+                _sqlDatabase.Cats.Remove(catToDelete);
+
+                _sqlDatabase.SaveChanges();
+
+                return await Task.FromResult(catToDelete);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occured while deleting a cat with Id {id} from the database", ex);
+            }
+        }
+
+        public async Task<List<Cat>> GetAllCatsAsync()
+        {
+
+            try
+            {
+                return await _sqlDatabase.Cats.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occured while getting all cats from the database", ex);
+            }
+
+        }
+
+        public async Task<Cat> GetCatById(Guid id)
+        {
+            try
+            {
+                Cat? wantedCat = await _sqlDatabase.Cats.FirstOrDefaultAsync(cat => cat.AnimalId == id);
+
+                if (wantedCat == null)
+                {
+                    throw new Exception($"There was no cat with Id {id} in the database");
+                }
+
+                return await Task.FromResult(wantedCat);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"An error occured while getting a cat with Id {id} from database", ex);
+            }
+        }
+
+        public Task<Cat> UpdateCat(Cat updateCat)
+        {
+            try
+            {
+                _sqlDatabase.Cats.Update(updateCat);
+
+                _sqlDatabase.SaveChanges();
+
+                return Task.FromResult(updateCat);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occured while updating a cat by Id {updateCat.AnimalId} from database", ex);
+            }
+        }
+    }
+}

@@ -1,40 +1,28 @@
-﻿using Domain.Models;
-using Infrastructure.Authentication;
-using Infrastructure.Database;
+﻿using Infrastructure.Repositories.Users;
 using MediatR;
 
 namespace Application.Queries.Users.GetToken
 {
     public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, string>
     {
-        private readonly MockDatabase _mockDatabase;
-        private readonly JwtTokenGenerator _jwtTokenGenerator;
+        private readonly IUserRepository _userRepository;
 
-        public GetUserTokenQueryHandler(MockDatabase mockDatabase, JwtTokenGenerator jwtTokenGenerator)
+        public GetUserTokenQueryHandler(IUserRepository userRepository)
         {
-            _mockDatabase = mockDatabase;
-            _jwtTokenGenerator = jwtTokenGenerator;
+            _userRepository = userRepository;
         }
 
-        public Task<string> Handle(GetUserTokenQuery request, CancellationToken cancellationToken)
+        public async Task<string> Handle(GetUserTokenQuery request, CancellationToken cancellationToken)
         {
-            User wantedUser = _mockDatabase.Users.FirstOrDefault(user => user.Username == request.Username)!;
 
-            if (wantedUser == null)
+            string token = await _userRepository.SignInUserByUsernameAndPassword(request.Username, request.Password);
+
+            if (token == null)
             {
-                return Task.FromResult<string>(null!);
+                return null!;
             }
 
-            bool userPassword = BCrypt.Net.BCrypt.Verify(request.Password, wantedUser.Password);
-
-            if (!userPassword)
-            {
-                return Task.FromResult<string>(null!);
-            }
-
-            var token = _jwtTokenGenerator.GenerateJwtToken(wantedUser);
-
-            return Task.FromResult(token);
+            return token;
 
         }
     }

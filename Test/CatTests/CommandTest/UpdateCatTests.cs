@@ -1,51 +1,43 @@
 ﻿using Application.Commands.Cats.UpdateCat;
 using Application.Dtos;
-using Infrastructure.Database;
-using NUnit.Framework.Constraints;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using Domain.Models;
+using FakeItEasy;
+using Infrastructure.Repositories.Cats;
 namespace Test.CatTests.CommandTest
 {
     [TestFixture]
     public class UpdateCatTests
     {
-        private UpdateCatByIdCommandHandler _handler;
-        private MockDatabase _mockDatabase;
-
-        [SetUp]
-        public void SetUp()
-        {
-            // Initialize the handler and mock database before each test
-            _mockDatabase = new MockDatabase();
-            _handler = new UpdateCatByIdCommandHandler(_mockDatabase);
-        }
-
         [Test]
         public async Task Handle_Update_Correct_Cat_By_Id()
         {
             //Arrange
-            var catId = new Guid("12345678-1234-5678-1234-567812345601");
 
-            var catName = "Börje";
+            var guid = new Guid("ce9b91e4-08d1-4628-82c1-8ef6ec622220");
 
-            var dto = new CatDto();
+            var cat = new Cat { AnimalId = new Guid("ce9b91e4-08d1-4628-82c1-8ef6ec622220"), Name = "Hans", LikesToPlay = true };
 
-            dto.Name = catName;
+            var catDto = new CatDto { Name = "Carl", LikesToPlay = true };
 
-            dto.LikesToPlay = false;
+            var catRepository = A.Fake<ICatRepository>();
 
-            var command = new UpdateCatByIdCommand(dto, catId);
+            var handler = new UpdateCatByIdCommandHandler(catRepository);
+
+            A.CallTo(() => catRepository.GetCatById(cat.AnimalId)).Returns(cat);
+
+            A.CallTo(() => catRepository.UpdateCat(cat)).Returns(cat);
+
+            var command = new UpdateCatByIdCommand(catDto, guid);
 
             //Act
-            var result = await _handler.Handle(command, CancellationToken.None);
+
+            var result = await handler.Handle(command, CancellationToken.None);
 
             //Assert
-            Assert.That(result.Name, Is.EqualTo(catName));
-            Assert.That(result.LikesToPlay, Is.False);
+            Assert.IsNotNull(result);
+            Assert.That(result.Name.Equals("Carl"));
+            Assert.That(result.LikesToPlay.Equals(true));
+            Assert.That(result, Is.TypeOf<Cat>());
         }
     }
 }
