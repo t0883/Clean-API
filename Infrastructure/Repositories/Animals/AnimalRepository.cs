@@ -60,7 +60,6 @@ namespace Infrastructure.Repositories.Animals
             {
                 List<UserAnimalJointTable> searchedAnimals = new List<UserAnimalJointTable>();
 
-
                 var username = await _sqlDatabase.Users.FirstOrDefaultAsync(x => x.UserId == Id);
 
                 if (username == null)
@@ -78,7 +77,7 @@ namespace Infrastructure.Repositories.Animals
 
                     if (dogs == null)
                     {
-                        break;
+                        continue;
                     }
 
                     var animal = new AnimalModel { AnimalId = dog.AnimalId, Name = dogs.Name };
@@ -98,7 +97,7 @@ namespace Infrastructure.Repositories.Animals
 
                     if (cats == null)
                     {
-                        break;
+                        continue;
                     }
                     var animal = new AnimalModel { AnimalId = cat.AnimalId, Name = cats.Name };
 
@@ -116,7 +115,7 @@ namespace Infrastructure.Repositories.Animals
 
                     if (birds == null)
                     {
-                        break;
+                        continue;
                     }
                     var animal = new AnimalModel { AnimalId = bird.AnimalId, Name = birds.Name };
 

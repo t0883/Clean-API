@@ -68,7 +68,7 @@ namespace API.Controllers.BirdsController
         //[Authorize]
         [HttpPost]
         [Route("addNewBird")]
-        public async Task<IActionResult> AddBird([FromBody] BirdDto newBird)
+        public async Task<IActionResult> AddBird([FromBody] BirdDto newBird, Guid userId)
         {
             var birdValidator = _birdValidator.Validate(newBird);
 
@@ -79,7 +79,7 @@ namespace API.Controllers.BirdsController
 
             try
             {
-                return Ok(await _mediator.Send(new AddBirdCommand(newBird)));
+                return Ok(await _mediator.Send(new AddBirdCommand(newBird, userId)));
             }
             catch (Exception ex)
             {

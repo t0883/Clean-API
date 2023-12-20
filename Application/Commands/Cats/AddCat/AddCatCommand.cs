@@ -13,6 +13,6 @@ namespace Application.Commands.Cats.AddCat
         }
 
         public CatDto NewCat { get; }
-        public Guid UserId { get; set; }
+        public Guid UserId { get; }
     }
 }

@@ -6,7 +6,7 @@ namespace Infrastructure.Repositories.Birds
     {
         Task<List<Bird>> GetAllBirdsAsync();
         Task<Bird> GetBirdById(Guid id);
-        Task<Bird> AddBird(Bird newBird);
+        Task<Bird> AddBird(Bird newBird, Guid id);
         Task<Bird> UpdateBird(Bird updateBird);
         Task<Bird> DeleteBirdById(Guid id);
     }
