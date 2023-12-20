@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Authentication;
 using Infrastructure.Database;
+using Infrastructure.Repositories.Animals;
 using Infrastructure.Repositories.Birds;
 using Infrastructure.Repositories.Cats;
 using Infrastructure.Repositories.Dogs;
@@ -18,6 +19,7 @@ namespace Infrastructure
             services.AddScoped<IBirdRepository, BirdRepository>();
             services.AddScoped<ICatRepository, CatRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAnimalRepository, AnimalRepository>();
 
             return services;
         }
