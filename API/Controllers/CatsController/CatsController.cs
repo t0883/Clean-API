@@ -4,6 +4,7 @@ using Application.Commands.Cats.UpdateCat;
 using Application.Dtos;
 using Application.Queries.Cats.GetAll;
 using Application.Queries.Cats.GetById;
+using Application.Queries.Cats.GetWeight;
 using Application.Validators;
 using Application.Validators.Cat;
 using MediatR;
@@ -54,6 +55,13 @@ namespace API.Controllers.CatsController
             }
 
             return Ok(cat);
+        }
+
+        [HttpGet]
+        [Route("getCatsByWeightOrBreed")]
+        public async Task<IActionResult> GetAllCatsByWeight(int? weight, string? breed)
+        {
+            return Ok(await _mediator.Send(new GetCatsByWeightOrBreedQuery { Weight = weight, Breed = breed }));
         }
 
         //[Authorize]

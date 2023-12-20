@@ -71,6 +71,34 @@ namespace Infrastructure.Repositories.Cats
 
         }
 
+        public async Task<List<Cat>> GetCatsByWeightBreed(int? weight, string? breed)
+        {
+            try
+            {
+                List<Cat> allCats = new List<Cat>();
+
+                var query = _sqlDatabase.Cats.OfType<Cat>();
+
+                if (weight.HasValue)
+                {
+                    query = query.Where(cat => cat.Weight >= weight.Value);
+                }
+
+                if (!string.IsNullOrEmpty(breed))
+                {
+                    query = query.Where(cat => cat.Breed == breed);
+                }
+
+                var cats = await query.OrderByDescending(cat => cat.Weight).ToListAsync();
+
+                return cats;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<Cat> GetCatById(Guid id)
         {
             try
