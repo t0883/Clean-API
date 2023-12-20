@@ -26,6 +26,8 @@ namespace Test.CatTests.CommandTest
             var dto = new CatDto();
 
             dto.Name = catName;
+            dto.Breed = "Huskatt";
+            dto.Weight = 1;
 
             var command = new AddCatCommand(dto, requestGuid);
 

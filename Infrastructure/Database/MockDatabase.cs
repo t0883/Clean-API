@@ -1,9 +1,7 @@
-﻿using Domain.Models;
-
-namespace Infrastructure.Database
+﻿namespace Infrastructure.Database
 {
     public class MockDatabase
-    {
+    { /*
         public List<Dog> Dogs
         {
             get { return allDogs; }
@@ -61,6 +59,7 @@ namespace Infrastructure.Database
             new User { UserId = new Guid("08260479-52a0-4c0e-a588-274101a2c3be"), Username = "Tobias", Password = "$2a$11$beyOyyXOWL33wMRMTkOOL.RGhL8iM0w3ptljj3M89vYQe/9kcLdFq", Authorized = true, Role = "Admin" },
             new User { UserId = new Guid("047425eb-15a5-4310-9d25-e281ab036868"), Username = "NotAnAdmin", Password = "$2a$11$beyOyyXOWL33wMRMTkOOL.RGhL8iM0w3ptljj3M89vYQe/9kcLdFq", Authorized = false, Role = "User"}
         };
-
+        */
     }
+
 }
