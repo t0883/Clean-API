@@ -2,7 +2,6 @@
 using Application.Commands.Users.DeleteUser;
 using Application.Commands.Users.UpdateUser;
 using Application.Dtos;
-using Application.Queries.Users.GetAllAnimals;
 using Application.Queries.Users.GetToken;
 using Application.Validators;
 using Application.Validators.User;
@@ -120,13 +119,6 @@ namespace API.Controllers.UsersController
             }
         }
 
-        [HttpGet]
-        [Route("getAllAnimalsById/{userId}")]
-        public async Task<IActionResult> GetAnimalsById(Guid userId)
-        {
-            var animals = await _mediator.Send(new GetAllAnimalsByIdQuery(userId));
 
-            return Ok(animals);
-        }
     }
 }
