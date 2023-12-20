@@ -22,7 +22,7 @@ namespace Application.Commands.Cats.AddCat
                 Name = request.NewCat.Name
             };
 
-            await _catRepository.AddCat(catToCreate);
+            await _catRepository.AddCat(catToCreate, request.UserId);
 
 
             return catToCreate;

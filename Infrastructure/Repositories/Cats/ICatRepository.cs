@@ -6,7 +6,7 @@ namespace Infrastructure.Repositories.Cats
     {
         Task<List<Cat>> GetAllCatsAsync();
         Task<Cat> GetCatById(Guid id);
-        Task<Cat> AddCat(Cat newCat);
+        Task<Cat> AddCat(Cat newCat, Guid Id);
         Task<Cat> UpdateCat(Cat updateCat);
         Task<Cat> DeleteCatById(Guid id);
     }

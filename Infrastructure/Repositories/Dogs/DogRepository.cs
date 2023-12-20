@@ -19,7 +19,6 @@ namespace Infrastructure.Repositories.Dogs
         {
             try
             {
-                //User user = await _sqlDatabase.Users.FirstOrDefaultAsync(x => x.UserId == id);
 
                 var user = await _sqlDatabase.Users.FirstOrDefaultAsync(x => x.UserId == id);
 

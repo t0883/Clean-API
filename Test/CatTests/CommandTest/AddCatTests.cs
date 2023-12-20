@@ -13,12 +13,13 @@ namespace Test.CatTests.CommandTest
         {
             //Arrange
             var cat = new Cat { Name = "Herman" };
+            var requestGuid = Guid.NewGuid();
 
             var catRepository = A.Fake<ICatRepository>();
 
             var handler = new AddCatCommandHandler(catRepository);
 
-            A.CallTo(() => catRepository.AddCat(cat)).Returns(cat);
+            A.CallTo(() => catRepository.AddCat(cat, requestGuid)).Returns(cat);
 
             var catName = "Herman";
 
@@ -26,7 +27,7 @@ namespace Test.CatTests.CommandTest
 
             dto.Name = catName;
 
-            var command = new AddCatCommand(dto);
+            var command = new AddCatCommand(dto, requestGuid);
 
             //Act
 

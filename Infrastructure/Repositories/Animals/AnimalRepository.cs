@@ -58,6 +58,8 @@ namespace Infrastructure.Repositories.Animals
         {
             try
             {
+                List<UserAnimalJointTable> searchedAnimals = new List<UserAnimalJointTable>();
+
 
                 var username = await _sqlDatabase.Users.FirstOrDefaultAsync(x => x.UserId == Id);
 
@@ -82,7 +84,14 @@ namespace Infrastructure.Repositories.Animals
                     var animal = new AnimalModel { AnimalId = dog.AnimalId, Name = dogs.Name };
 
                     user.Animals.Add(animal);
+                    searchedAnimals.Add(dog);
                 }
+
+                foreach (var animals in searchedAnimals)
+                {
+                    userAnimals.Remove(animals);
+                }
+
                 foreach (var cat in userAnimals)
                 {
                     var cats = await _sqlDatabase.Cats.FirstOrDefaultAsync(x => x.AnimalId == cat.AnimalId);
@@ -94,6 +103,11 @@ namespace Infrastructure.Repositories.Animals
                     var animal = new AnimalModel { AnimalId = cat.AnimalId, Name = cats.Name };
 
                     user.Animals.Add(animal);
+                }
+
+                foreach (var animals in searchedAnimals)
+                {
+                    userAnimals.Remove(animals);
                 }
 
                 foreach (var bird in userAnimals)
@@ -108,7 +122,6 @@ namespace Infrastructure.Repositories.Animals
 
                     user.Animals.Add(animal);
                 }
-
 
                 return user;
             }
