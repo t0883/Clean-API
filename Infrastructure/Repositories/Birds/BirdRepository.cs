@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.Models.UserAnimal;
 using Infrastructure.Database.SqlServer;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,10 +14,21 @@ namespace Infrastructure.Repositories.Birds
             _sqlDatabase = sqlDatabase;
         }
 
-        public async Task<Bird> AddBird(Bird newBird)
+        public async Task<Bird> AddBird(Bird newBird, Guid id)
         {
             try
             {
+                var user = await _sqlDatabase.Users.FirstOrDefaultAsync(x => x.UserId == id);
+
+                if (user == null)
+                {
+                    throw new Exception("User not found");
+                }
+
+                var userAnimal = new UserAnimalJointTable { AnimalId = newBird.AnimalId, UserId = id };
+
+                _sqlDatabase.UserAnimals.Add(userAnimal);
+
                 _sqlDatabase.Birds.Add(newBird);
                 _sqlDatabase.SaveChanges();
                 return await Task.FromResult(newBird);

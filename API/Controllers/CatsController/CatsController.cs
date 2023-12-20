@@ -59,7 +59,7 @@ namespace API.Controllers.CatsController
         //[Authorize]
         [HttpPost]
         [Route("addNewCat")]
-        public async Task<IActionResult> AddCat([FromBody] CatDto newCat, Guid UserId)
+        public async Task<IActionResult> AddCat([FromBody] CatDto newCat, Guid userId)
         {
             var catValidate = _catValidator.Validate(newCat);
 
@@ -68,7 +68,7 @@ namespace API.Controllers.CatsController
                 return BadRequest(catValidate.Errors.ConvertAll(errors => errors.ErrorMessage));
             }
 
-            return Ok(await _mediator.Send(new AddCatCommand(newCat, UserId)));
+            return Ok(await _mediator.Send(new AddCatCommand(newCat, userId)));
         }
 
         [Authorize]

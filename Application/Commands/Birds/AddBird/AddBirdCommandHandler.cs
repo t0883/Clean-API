@@ -22,7 +22,7 @@ namespace Application.Commands.Birds.AddBird
                 CanFly = request.NewBird.CanFly
             };
 
-            var createdBird = await _birdRepository.AddBird(birdToCreate);
+            var createdBird = await _birdRepository.AddBird(birdToCreate, request.UserId);
 
             return createdBird;
         }
