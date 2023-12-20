@@ -72,6 +72,21 @@ namespace Infrastructure.Repositories.Birds
             }
         }
 
+        public async Task<List<Bird>> GetAllBirdsWithColor(string color)
+        {
+            try
+            {
+                var birds = await _sqlDatabase.Birds.Where(b => b.Color == color).ToListAsync();
+
+                return birds;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            };
+        }
+
         public async Task<Bird> GetBirdById(Guid id)
         {
             try
