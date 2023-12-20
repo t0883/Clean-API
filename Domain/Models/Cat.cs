@@ -11,5 +11,9 @@ namespace Domain.Models
             return "This animal purrs";
         }
         public bool LikesToPlay { get; set; }
+
+        public int Weight { get; set; }
+
+        public string Breed { get; set; } = string.Empty;
     }
 }

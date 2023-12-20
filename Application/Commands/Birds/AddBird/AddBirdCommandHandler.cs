@@ -19,7 +19,9 @@ namespace Application.Commands.Birds.AddBird
             {
                 AnimalId = Guid.NewGuid(),
                 Name = request.NewBird.Name,
-                CanFly = request.NewBird.CanFly
+                CanFly = request.NewBird.CanFly,
+                Color = request.NewBird.Color
+
             };
 
             var createdBird = await _birdRepository.AddBird(birdToCreate, request.UserId);

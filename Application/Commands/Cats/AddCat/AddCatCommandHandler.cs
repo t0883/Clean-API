@@ -19,7 +19,9 @@ namespace Application.Commands.Cats.AddCat
             Cat catToCreate = new()
             {
                 AnimalId = Guid.NewGuid(),
-                Name = request.NewCat.Name
+                Name = request.NewCat.Name,
+                Breed = request.NewCat.Breed,
+                Weight = request.NewCat.Weight
             };
 
             await _catRepository.AddCat(catToCreate, request.UserId);
