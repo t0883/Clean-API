@@ -1,5 +1,4 @@
 ﻿using Domain.Models;
-using Domain.Models.Animal;
 using Infrastructure.Repositories.Users;
 using MediatR;
 
@@ -23,17 +22,15 @@ namespace Application.Commands.Users.UpdateUser
                 return null!;
             }
 
-            AnimalModel animalToAddToUser = new AnimalModel
+            if (userToUpdate.Username != request.UserToUpdate.UserName) { userToUpdate.Username = request.UserToUpdate.UserName; }
+            if (userToUpdate.Role != request.UserToUpdate.Role) { userToUpdate.Role = request.UserToUpdate.Role; }
+            if (userToUpdate.Authorized != request.UserToUpdate.Authorized) { userToUpdate.Authorized = request.UserToUpdate.Authorized; }
+            if (userToUpdate.Password != request.UserToUpdate.Password)
             {
-                Name = "Sten",
-                AnimalId = new Guid()
-            };
-            /*
-            userToUpdate.Username = request.UserToUpdate.UserName;
-            userToUpdate.Role = request.UserToUpdate.Role;
-            userToUpdate.Authorized = request.UserToUpdate.Authorized;
-            userToUpdate.Animals.Add(animalToAddToUser);
-            */
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.UserToUpdate.Password);
+                userToUpdate.Password = hashedPassword;
+            }
+
             var updatedUser = await _userRepository.UpdateUser(userToUpdate);
 
             return updatedUser;
