@@ -93,6 +93,32 @@ namespace Infrastructure.Repositories.Dogs
             }
         }
 
+        public async Task<List<Dog>> GetDogsByWeightBreed(int? weight, string? breed)
+        {
+            try
+            {
+                var query = _sqlDatabase.Dogs.OfType<Dog>();
+
+                if (weight.HasValue)
+                {
+                    query = query.Where(dog => dog.Weight >= weight.Value);
+                }
+
+                if (!string.IsNullOrEmpty(breed))
+                {
+                    query = query.Where(dog => dog.Breed == breed);
+                }
+
+                var dogs = await query.OrderByDescending(dog => dog.Weight).ToListAsync();
+
+                return dogs;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<Dog> UpdateDog(Dog updatedDog)
         {
             try

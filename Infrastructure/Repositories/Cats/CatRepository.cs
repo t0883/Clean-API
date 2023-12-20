@@ -75,8 +75,6 @@ namespace Infrastructure.Repositories.Cats
         {
             try
             {
-                List<Cat> allCats = new List<Cat>();
-
                 var query = _sqlDatabase.Cats.OfType<Cat>();
 
                 if (weight.HasValue)
