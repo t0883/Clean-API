@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Commands.Users.AddUser
 {
-    public class AddUserCommandHandler : IRequestHandler<AddUserCommand, string>
+    public class AddUserCommandHandler : IRequestHandler<AddUserCommand, User>
     {
         private readonly IUserRepository _userRepository;
 
@@ -13,7 +13,7 @@ namespace Application.Commands.Users.AddUser
             _userRepository = userRepository;
         }
 
-        public async Task<string> Handle(AddUserCommand request, CancellationToken cancellationToken)
+        public async Task<User> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
 
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
@@ -27,11 +27,7 @@ namespace Application.Commands.Users.AddUser
                 Role = "NewUser"
             };
 
-            await _userRepository.AddUser(userToCreate);
-
-            var message = "";
-
-            return message;
+            return await _userRepository.AddUser(userToCreate); ;
         }
     }
 }
