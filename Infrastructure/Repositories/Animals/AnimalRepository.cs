@@ -15,6 +15,21 @@ namespace Infrastructure.Repositories.Animals
             _sqlDatabase = sqlDatabase;
         }
 
+        public Task<UserAnimalJointTable> AddConnection(Guid userId, Guid animalId)
+        {
+            var connectionToCreate = new UserAnimalJointTable
+            {
+                UserId = userId,
+                AnimalId = animalId
+            };
+
+            _sqlDatabase.UserAnimals.Add(connectionToCreate);
+
+            _sqlDatabase.SaveChanges();
+
+            return Task.FromResult(connectionToCreate);
+        }
+
         public async Task<List<AnimalUserModel>> GetAllAnimals()
         {
             try
