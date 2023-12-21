@@ -1,5 +1,6 @@
 ﻿using Application.Queries.Animals.GetAll;
 using Application.Queries.Animals.GetAllAnimalsForUser;
+using Application.Queries.Animals.GetById;
 using Application.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -27,12 +28,21 @@ namespace API.Controllers.AnimalsController
         }
 
         [HttpGet]
-        [Route("getAllAnimalsById/{userId}")]
-        public async Task<IActionResult> GetAnimalsById(Guid userId)
+        [Route("getAllAnimalsForUserById/{userId}")]
+        public async Task<IActionResult> GetAllAnimalsForUserById(Guid userId)
         {
             var animals = await _mediator.Send(new GetAllAnimalsByIdQuery(userId));
 
             return Ok(animals);
+        }
+
+        [HttpGet]
+        [Route("getAnimalById/{animalId}")]
+        public async Task<IActionResult> GetAnimalById(Guid animalId)
+        {
+            var animal = await _mediator.Send(new GetAnimalsByIdQuery(animalId));
+
+            return Ok(animal);
         }
     }
 }

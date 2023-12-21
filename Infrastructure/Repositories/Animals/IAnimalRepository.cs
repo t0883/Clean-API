@@ -1,13 +1,11 @@
-﻿using Domain.Models.Animal;
-using Domain.Models.UserAnimal;
+﻿using Domain.Models.UserAnimal;
 
 namespace Infrastructure.Repositories.Animals
 {
     public interface IAnimalRepository
     {
-        Task<List<AnimalModel>> GetAllAnimals();
-        Task<List<UserAnimalModel>> GetAllUserAnimals();
-        Task<List<AnimalUserModel>> GetAllAnimalUsers();
-        Task<UserAnimalModel> GetAllAnimalsForUser(Guid Id);
+        Task<List<AnimalUserModel>> GetAllAnimals();
+        Task<UserAnimalModel> GetAllAnimalsForUser(Guid id);
+        Task<AnimalUserModel> GetAnimalById(Guid id);
     }
 }
