@@ -50,6 +50,14 @@ namespace Infrastructure.Repositories.Dogs
             {
                 Dog dogToDelete = await GetDogById(id);
 
+                UserAnimalJointTable connectionToRemove = await _sqlDatabase.UserAnimals.Where(d => d.AnimalId == dogToDelete.AnimalId).FirstOrDefaultAsync();
+
+                if (connectionToRemove != null)
+                {
+                    _sqlDatabase.UserAnimals.Remove(connectionToRemove);
+                }
+
+
                 _sqlDatabase.Dogs.Remove(dogToDelete);
 
                 _sqlDatabase.SaveChanges();
