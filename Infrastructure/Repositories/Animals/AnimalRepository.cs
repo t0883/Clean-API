@@ -192,12 +192,8 @@ namespace Infrastructure.Repositories.Animals
             }
             catch (Exception ex)
             {
-
                 throw new Exception($"An error occured while getting an animal with Id {id} from database", ex);
             }
-
-
-
         }
     }
 }
