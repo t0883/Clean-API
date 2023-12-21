@@ -45,6 +45,14 @@ namespace Infrastructure.Repositories.Cats
             {
                 Cat catToDelete = await GetCatById(id);
 
+                UserAnimalJointTable connectionToRemove = await _sqlDatabase.UserAnimals.Where(c => c.AnimalId == catToDelete.AnimalId).FirstOrDefaultAsync();
+
+                if (connectionToRemove != null)
+                {
+                    _sqlDatabase.UserAnimals.Remove(connectionToRemove);
+                }
+
+
                 _sqlDatabase.Cats.Remove(catToDelete);
 
                 _sqlDatabase.SaveChanges();
