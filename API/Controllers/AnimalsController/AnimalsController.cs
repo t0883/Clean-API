@@ -1,4 +1,5 @@
-﻿using Application.Queries.Animals.GetAll;
+﻿using Application.Commands.UserAnimals;
+using Application.Queries.Animals.GetAll;
 using Application.Queries.Animals.GetAllAnimalsForUser;
 using Application.Queries.Animals.GetById;
 using Application.Validators;
@@ -43,6 +44,15 @@ namespace API.Controllers.AnimalsController
             var animal = await _mediator.Send(new GetAnimalsByIdQuery(animalId));
 
             return Ok(animal);
+        }
+
+        [HttpPost]
+        [Route("addNewConnectionBetweenAnimals")]
+        public async Task<IActionResult> AddNewConnectionBetweenAnimals(Guid userId, Guid animalId)
+        {
+            var connection = await _mediator.Send(new AddAnimalUserConnectionCommand(userId, animalId));
+
+            return Ok(connection);
         }
     }
 }

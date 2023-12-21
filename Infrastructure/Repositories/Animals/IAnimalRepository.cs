@@ -7,5 +7,6 @@ namespace Infrastructure.Repositories.Animals
         Task<List<AnimalUserModel>> GetAllAnimals();
         Task<UserAnimalModel> GetAllAnimalsForUser(Guid id);
         Task<AnimalUserModel> GetAnimalById(Guid id);
+        Task<UserAnimalJointTable> AddConnection(Guid userId, Guid animalId);
     }
 }
