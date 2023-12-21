@@ -46,7 +46,7 @@ namespace Infrastructure.Repositories.Birds
             {
                 Bird birdToDelete = await GetBirdById(id);
 
-                UserAnimalJointTable? connectionToRemove = await _sqlDatabase.UserAnimals.Where(b => b.AnimalId == birdToDelete.AnimalId).FirstOrDefaultAsync();
+                UserAnimalJointTable connectionToRemove = await _sqlDatabase.UserAnimals.Where(b => b.AnimalId == birdToDelete.AnimalId).FirstOrDefaultAsync();
 
                 if (connectionToRemove != null)
                 {
