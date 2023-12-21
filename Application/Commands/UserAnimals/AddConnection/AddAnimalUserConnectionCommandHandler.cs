@@ -2,7 +2,7 @@
 using Infrastructure.Repositories.Animals;
 using MediatR;
 
-namespace Application.Commands.UserAnimals
+namespace Application.Commands.UserAnimals.AddConnection
 {
     public class AddAnimalUserConnectionCommandHandler : IRequestHandler<AddAnimalUserConnectionCommand, UserAnimalJointTable>
     {

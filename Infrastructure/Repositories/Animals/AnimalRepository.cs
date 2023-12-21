@@ -17,17 +17,50 @@ namespace Infrastructure.Repositories.Animals
 
         public Task<UserAnimalJointTable> AddConnection(Guid userId, Guid animalId)
         {
-            var connectionToCreate = new UserAnimalJointTable
+            try
             {
-                UserId = userId,
-                AnimalId = animalId
-            };
+                var connectionToCreate = new UserAnimalJointTable
+                {
+                    UserId = userId,
+                    AnimalId = animalId
+                };
 
-            _sqlDatabase.UserAnimals.Add(connectionToCreate);
+                _sqlDatabase.UserAnimals.Add(connectionToCreate);
 
-            _sqlDatabase.SaveChanges();
+                _sqlDatabase.SaveChanges();
 
-            return Task.FromResult(connectionToCreate);
+                return Task.FromResult(connectionToCreate);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"An error occured when adding a connection between user with Id {userId} and animal with Id {animalId}", ex);
+            }
+
+        }
+
+        public async Task<UserAnimalJointTable> DeleteConnection(Guid userId, Guid animalId)
+        {
+            try
+            {
+                UserAnimalJointTable connectionToDelete = await _sqlDatabase.UserAnimals.Where(u => u.UserId == userId).Where(a => a.AnimalId == animalId).FirstOrDefaultAsync();
+
+                if (connectionToDelete == null)
+                {
+                    throw new Exception("There is no user with that animal in the database");
+                }
+
+                _sqlDatabase.UserAnimals.Remove(connectionToDelete);
+
+                _sqlDatabase.SaveChanges();
+
+                return await Task.FromResult(connectionToDelete);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"An error occured while deleting the connection between {userId} and {animalId}", ex);
+            }
         }
 
         public async Task<List<AnimalUserModel>> GetAllAnimals()

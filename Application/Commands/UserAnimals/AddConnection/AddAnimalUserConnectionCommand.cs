@@ -1,7 +1,7 @@
 ﻿using Domain.Models.UserAnimal;
 using MediatR;
 
-namespace Application.Commands.UserAnimals
+namespace Application.Commands.UserAnimals.AddConnection
 {
     public class AddAnimalUserConnectionCommand : IRequest<UserAnimalJointTable>
     {

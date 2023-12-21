@@ -1,4 +1,5 @@
-﻿using Application.Commands.UserAnimals;
+﻿using Application.Commands.UserAnimals.AddConnection;
+using Application.Commands.UserAnimals.DeleteConnection;
 using Application.Queries.Animals.GetAll;
 using Application.Queries.Animals.GetAllAnimalsForUser;
 using Application.Queries.Animals.GetById;
@@ -47,12 +48,21 @@ namespace API.Controllers.AnimalsController
         }
 
         [HttpPost]
-        [Route("addNewConnectionBetweenAnimals")]
-        public async Task<IActionResult> AddNewConnectionBetweenAnimals(Guid userId, Guid animalId)
+        [Route("addNewConnectionBetweenAnimalAndUser")]
+        public async Task<IActionResult> AddNewConnectionBetweenAnimalAndUser(Guid userId, Guid animalId)
         {
             var connection = await _mediator.Send(new AddAnimalUserConnectionCommand(userId, animalId));
 
             return Ok(connection);
+        }
+
+        [HttpDelete]
+        [Route("deleteConnectionBetweenAnimalAndUser")]
+        public async Task<IActionResult> DeleteConnectionBetweenAnimalAndUser(Guid userId, Guid animalId)
+        {
+            await _mediator.Send(new DeleteAnimalUserConnectionCommand(userId, animalId));
+
+            return NoContent();
         }
     }
 }
