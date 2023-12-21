@@ -8,5 +8,7 @@ namespace Infrastructure.Repositories.Animals
         Task<UserAnimalModel> GetAllAnimalsForUser(Guid id);
         Task<AnimalUserModel> GetAnimalById(Guid id);
         Task<UserAnimalJointTable> AddConnection(Guid userId, Guid animalId);
+        Task<UserAnimalJointTable> DeleteConnection(Guid userId, Guid animalId);
+
     }
 }
