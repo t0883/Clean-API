@@ -1,4 +1,5 @@
-﻿using Domain.Models.Animal;
+﻿using Domain.Models.Account;
+using Domain.Models.Animal;
 using Domain.Models.UserAnimal;
 using Infrastructure.Database.SqlServer;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +15,11 @@ namespace Infrastructure.Repositories.Animals
             _sqlDatabase = sqlDatabase;
         }
 
-        public async Task<List<AnimalModel>> GetAllAnimals()
+        public async Task<List<AnimalUserModel>> GetAllAnimals()
         {
             try
             {
-                List<AnimalModel> allAnimals = new List<AnimalModel>();
+                List<AnimalUserModel> allAnimals = new List<AnimalUserModel>();
 
                 var dogs = await _sqlDatabase.Dogs.ToListAsync();
 
@@ -28,19 +29,62 @@ namespace Infrastructure.Repositories.Animals
 
                 foreach (var dog in dogs)
                 {
-                    var animal = new AnimalModel { AnimalId = dog.AnimalId, Name = dog.Name };
+                    var animal = new AnimalUserModel { AnimalId = dog.AnimalId, AnimalName = dog.Name, Breed = dog.Breed };
+
+                    List<UserModelForAnimals> userModelForAnimals = new List<UserModelForAnimals>();
+
+                    var users = await _sqlDatabase.UserAnimals.ToListAsync();
+
+                    foreach (var user in users)
+                    {
+                        if (animal.AnimalId == user.AnimalId)
+                        {
+                            var wantedUser = new UserModelForAnimals { UserId = user.UserId };
+                            animal.Users.Add(wantedUser);
+                        }
+                    }
+
+
                     allAnimals.Add(animal);
                 }
 
                 foreach (var bird in birds)
                 {
-                    var animal = new AnimalModel { AnimalId = bird.AnimalId, Name = bird.Name };
+                    var animal = new AnimalUserModel { AnimalId = bird.AnimalId, AnimalName = bird.Name, Breed = "Bird" };
+
+                    List<UserModelForAnimals> userModelForAnimals = new List<UserModelForAnimals>();
+
+                    var users = await _sqlDatabase.UserAnimals.ToListAsync();
+
+                    foreach (var user in users)
+                    {
+                        if (animal.AnimalId == user.AnimalId)
+                        {
+                            var wantedUser = new UserModelForAnimals { UserId = user.UserId };
+                            animal.Users.Add(wantedUser);
+                        }
+                    }
+
                     allAnimals.Add(animal);
                 }
 
                 foreach (var cat in cats)
                 {
-                    var animal = new AnimalModel { AnimalId = cat.AnimalId, Name = cat.Name };
+                    var animal = new AnimalUserModel { AnimalId = cat.AnimalId, AnimalName = cat.Name, Breed = cat.Breed };
+
+                    List<UserModelForAnimals> userModelForAnimals = new List<UserModelForAnimals>();
+
+                    var users = await _sqlDatabase.UserAnimals.ToListAsync();
+
+                    foreach (var user in users)
+                    {
+                        if (animal.AnimalId == user.AnimalId)
+                        {
+                            var wantedUser = new UserModelForAnimals { UserId = user.UserId };
+                            animal.Users.Add(wantedUser);
+                        }
+                    }
+
                     allAnimals.Add(animal);
                 }
 
@@ -54,22 +98,22 @@ namespace Infrastructure.Repositories.Animals
             }
         }
 
-        public async Task<UserAnimalModel> GetAllAnimalsForUser(Guid Id)
+        public async Task<UserAnimalModel> GetAllAnimalsForUser(Guid id)
         {
             try
             {
                 List<UserAnimalJointTable> searchedAnimals = new List<UserAnimalJointTable>();
 
-                var username = await _sqlDatabase.Users.FirstOrDefaultAsync(x => x.UserId == Id);
+                var username = await _sqlDatabase.Users.FirstOrDefaultAsync(x => x.UserId == id);
 
                 if (username == null)
                 {
-                    throw new Exception($"There is no user with id {Id} in the database");
+                    throw new Exception($"There is no user with id {id} in the database");
                 }
 
-                var user = new UserAnimalModel { UserId = Id, Username = username.Username };
+                var user = new UserAnimalModel { UserId = id, Username = username.Username };
 
-                var userAnimals = _sqlDatabase.UserAnimals.Where(user => user.UserId == Id).ToList();
+                var userAnimals = _sqlDatabase.UserAnimals.Where(user => user.UserId == id).ToList();
 
                 foreach (var dog in userAnimals)
                 {
@@ -127,19 +171,33 @@ namespace Infrastructure.Repositories.Animals
             catch (Exception ex)
             {
 
-                throw new Exception($"An error occured while getting all animals for user with id {Id}", ex);
+                throw new Exception($"An error occured while getting all animals for user with id {id}", ex);
             }
 
         }
-
-        public Task<List<AnimalUserModel>> GetAllAnimalUsers()
+        public async Task<AnimalUserModel> GetAnimalById(Guid id)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                var animals = await GetAllAnimals();
 
-        public Task<List<UserAnimalModel>> GetAllUserAnimals()
-        {
-            throw new NotImplementedException();
+                var wantedAnimal = animals.Where(a => a.AnimalId == id).FirstOrDefault();
+
+                if (wantedAnimal == null)
+                {
+                    return null!;
+                }
+
+                return wantedAnimal;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"An error occured while getting an animal with Id {id} from database", ex);
+            }
+
+
+
         }
     }
 }
