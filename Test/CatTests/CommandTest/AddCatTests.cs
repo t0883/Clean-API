@@ -1,15 +1,49 @@
-﻿using Application.Commands.Cats.AddCat;
+﻿using API.Controllers.CatsController;
+using Application.Commands.Cats.AddCat;
 using Application.Dtos;
+using Application.Validators;
+using Application.Validators.Cat;
 using Domain.Models;
 using FakeItEasy;
 using Infrastructure.Repositories.Cats;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 namespace Test.CatTests.CommandTest
 {
     [TestFixture]
     public class AddCatTests
     {
+
         [Test]
-        public async Task Handle_Add_Cat_To_Database()
+        public async Task Controller_Add_Cat()
+        {
+            //Arrange
+            var guid = Guid.NewGuid();
+
+            var userId = Guid.NewGuid();
+
+            var cat = new CatDto { Name = "Morris", Breed = "Huskatt", LikesToPlay = true, Weight = 4 };
+
+            var mediator = A.Fake<IMediator>();
+
+            A.CallTo(() => mediator.Send(guid, CancellationToken.None)).Returns(cat);
+
+            var guidValidator = new GuidValidator();
+
+            var catValidator = new CatValidator();
+
+            var catController = new CatsController(mediator, catValidator, guidValidator);
+
+            //Act
+            var result = await catController.AddCat(cat, userId);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<OkObjectResult>(result);
+        }
+
+        [Test]
+        public async Task Handle_Add_Cat()
         {
             //Arrange
             var cat = new Cat { Name = "Herman" };
@@ -40,5 +74,6 @@ namespace Test.CatTests.CommandTest
             Assert.That(result.Name.Equals("Herman"));
             Assert.That(result, Is.TypeOf<Cat>());
         }
+
     }
 }
