@@ -1,5 +1,4 @@
-﻿using Application.Validators.Dog;
-using Domain.Models;
+﻿using Domain.Models;
 using Infrastructure.Repositories.Dogs;
 using MediatR;
 
@@ -8,12 +7,10 @@ namespace Application.Commands.Dogs.UpdateDog
     public class UpdateDogByIdCommandHandler : IRequestHandler<UpdateDogByIdCommand, Dog>
     {
         private readonly IDogRepository _dogRepository;
-        private readonly DogValidator _dogValidator;
 
-        public UpdateDogByIdCommandHandler(IDogRepository dogRepository, DogValidator validator)
+        public UpdateDogByIdCommandHandler(IDogRepository dogRepository)
         {
             _dogRepository = dogRepository;
-            _dogValidator = validator;
         }
         public async Task<Dog> Handle(UpdateDogByIdCommand request, CancellationToken cancellationToken)
         {
@@ -25,13 +22,14 @@ namespace Application.Commands.Dogs.UpdateDog
                 return null!;
             }
 
-            /*
-            dogToUpdate.Name = request.DogToUpdate.Name;
-            dogToUpdate.Users.Add(request.DogToUpdate.Users);
-            */
-            var updatedDog = await _dogRepository.UpdateDog(dogToUpdate);
 
-            return updatedDog;
+            dogToUpdate.Name = request.DogToUpdate.Name;
+            dogToUpdate.Breed = request.DogToUpdate.Breed;
+            dogToUpdate.Weight = request.DogToUpdate.Weight;
+
+            await _dogRepository.UpdateDog(dogToUpdate);
+
+            return dogToUpdate;
         }
     }
 }

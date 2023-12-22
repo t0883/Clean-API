@@ -27,7 +27,9 @@ namespace Application.Commands.Users.AddUser
                 Role = "NewUser"
             };
 
-            return await _userRepository.AddUser(userToCreate); ;
+            await _userRepository.AddUser(userToCreate);
+
+            return userToCreate;
         }
     }
 }

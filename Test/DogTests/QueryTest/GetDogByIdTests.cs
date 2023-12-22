@@ -1,7 +1,10 @@
 ﻿using API.Controllers.DogsController;
+using Application.Queries.Dogs.GetById;
 using Application.Validators;
 using Application.Validators.Dog;
+using Domain.Models;
 using FakeItEasy;
+using Infrastructure.Repositories.Dogs;
 using MediatR;
 
 namespace Test.DogTests.QueryTest
@@ -34,9 +37,33 @@ namespace Test.DogTests.QueryTest
 
             //Assert
             Assert.That(result, Is.Not.Null);
-
         }
 
+        [Test]
+        public async Task Handle_ValidId_ReturnCorrectDog()
+        {
+            var guid = Guid.NewGuid();
+
+            var dog = new Dog { Name = "Sven", Breed = "EnRas", Weight = 40 };
+
+            var dogRepository = A.Fake<IDogRepository>();
+
+            var handler = new GetDogByIdQueryHandler(dogRepository);
+
+            A.CallTo(() => dogRepository.GetDogById(guid)).Returns(dog);
+
+            var command = new GetDogByIdQuery(guid);
+
+            //Act
+
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.That(result, Is.TypeOf<Dog>());
+            Assert.That(result.Name.Equals("Sven"));
+
+        }
     }
 }
 

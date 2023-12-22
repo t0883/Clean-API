@@ -121,7 +121,7 @@ namespace API.Controllers.CatsController
                 return BadRequest(guidValidator.Errors.ConvertAll(errors => errors.ErrorMessage));
             }
 
-            await _mediator.Send(new DeleteCatByIdCommand(deleteCatId));
+            var result = await _mediator.Send(new DeleteCatByIdCommand(deleteCatId));
 
             return NoContent();
         }
